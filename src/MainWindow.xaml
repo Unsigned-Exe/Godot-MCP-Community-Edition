@@ -609,12 +609,12 @@
                                 <!-- itch.io -->
                                 <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
-                                            <TextBlock Text="👾 itch.io" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
-                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="👾 itch.io" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" DockPanel.Dock="Left" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right">
                                                 <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
                                             </Border>
-                                        </StackPanel>
+                                        </DockPanel>
                                         <TextBlock Text="1-command delta uploads and channel tagging via Butler CLI." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
                                         <TextBlock Text="Butler Pipeline" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
                                     </StackPanel>
@@ -623,12 +623,12 @@
                                 <!-- Steam -->
                                 <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
-                                            <TextBlock Text="🚂 Steam" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
-                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="🚂 Steam" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" DockPanel.Dock="Left" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right">
                                                 <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
                                             </Border>
-                                        </StackPanel>
+                                        </DockPanel>
                                         <TextBlock Text="Automated depot building, VDF generation, and beta branch pushes." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
                                         <TextBlock Text="SteamCmd Engine" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
                                     </StackPanel>
@@ -637,12 +637,12 @@
                                 <!-- GitHub Releases -->
                                 <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
-                                            <TextBlock Text="🐙 GitHub Releases" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
-                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="🐙 GitHub Releases" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" DockPanel.Dock="Left" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right">
                                                 <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
                                             </Border>
-                                        </StackPanel>
+                                        </DockPanel>
                                         <TextBlock Text="Tag creation, release notes generator, and binary asset staging." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
                                         <TextBlock Text="GitHub CLI / API" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
                                     </StackPanel>
@@ -651,12 +651,12 @@
                                 <!-- Epic Games -->
                                 <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
-                                            <TextBlock Text="⚡ Epic Games" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
-                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="⚡ Epic Games" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" DockPanel.Dock="Left" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right">
                                                 <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
                                             </Border>
-                                        </StackPanel>
+                                        </DockPanel>
                                         <TextBlock Text="Binary chunking, sandbox uploads, and cloud staging validation." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
                                         <TextBlock Text="BuildPatchTool" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
                                     </StackPanel>
@@ -665,12 +665,12 @@
                                 <!-- GOG -->
                                 <Border Style="{StaticResource ProCardStyle}" Margin="0,0,0,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
-                                            <TextBlock Text="🛡️ GOG" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
-                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="🛡️ GOG" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" DockPanel.Dock="Left" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right">
                                                 <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
                                             </Border>
-                                        </StackPanel>
+                                        </DockPanel>
                                         <TextBlock Text="DRM-free master packaging and pipeline manifest generation." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
                                         <TextBlock Text="GOG Pipeline" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
                                     </StackPanel>
