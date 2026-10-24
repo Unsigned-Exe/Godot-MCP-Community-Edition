@@ -39,7 +39,7 @@ func _enter_tree() -> void:
 	# Create status panel
 	var panel_scene: PackedScene = preload("res://addons/godot_mcp/ui/status_panel.tscn")
 	status_panel = panel_scene.instantiate()
-	add_control_to_bottom_panel(status_panel, "MCP Pro")
+	add_control_to_bottom_panel(status_panel, "Godot-MCP")
 	status_panel.call_deferred("setup", websocket_server, command_router)
 
 	# Inject MCP autoloads into project settings
@@ -71,7 +71,7 @@ func _exit_tree() -> void:
 	if websocket_server:
 		websocket_server.queue_free()
 
-	print("[MCP] Godot MCP Pro stopped")
+	print("[MCP] Godot-MCP Community Edition stopped")
 
 
 ## Declares the opt-in connection token setting so it is discoverable in
