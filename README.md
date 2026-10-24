@@ -62,6 +62,20 @@ cd Godot-MCP-Community-Edition/src
 dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o ../dist
 ```
 
+### Option 3: Open & Build with Visual Studio
+This repository includes a pre-configured solution file (`GodotMCP.sln`) for opening and compiling the project directly inside Visual Studio 2022 or 2026:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git
+   ```
+2. **Open the Solution**:
+   Double-click `GodotMCP.sln` to open it in Visual Studio (requires the **.NET Desktop Development** workload).
+3. **Build the Solution**:
+   - Set configuration to **Release** and platform to **Any CPU** or **x64**.
+   - Press `Ctrl+Shift+B` (or select **Build -> Build Solution**).
+   - The compiled binary will be placed at `dist/GodotMCP.exe` (or `src/bin/Release/net8.0-windows/GodotMCP.exe`).
+
 ---
 
 ## Usage
