@@ -572,9 +572,16 @@
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Compatibility:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" Margin="0,0,0,8" />
                                     <TextBlock x:Name="txtPublishCompat" Grid.Row="1" Grid.Column="1" Text="Godot 4.x (4.0 - 4.7+)" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" Margin="0,0,0,8" />
 
-                                    <!-- Download / Repository URL -->
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Git Repository:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
-                                    <TextBox x:Name="txtPublishRepoUrl" Grid.Row="2" Grid.Column="1" Text="https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" Margin="0,0,8,0" />
+                                    <!-- Download / Repository URL or Local Archive -->
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Git Repo / URL:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,8,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="txtPublishRepoUrl" Text="https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" Margin="0,0,6,0" />
+                                        <Button Grid.Column="1" Content="Browse..." Click="OnBrowsePublishRepoOrDir" Height="28" Padding="10,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" Cursor="Hand" />
+                                    </Grid>
                                     <Button Grid.Row="2" Grid.Column="2" Content="⚡ Validate &amp; Package" Click="OnValidateAssetLibPackage" Height="28" Padding="12,0" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" />
                                 </Grid>
                             </Border>

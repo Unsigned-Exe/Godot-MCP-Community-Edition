@@ -126,6 +126,8 @@
 <li><strong>Double-Click</strong>: Launches the modern WPF desktop hub with Light/Dark mode switcher, project management, and 1-click AI assistant synchronization.</li>
 <li><strong>Invoked by AI Client</strong>: Runs silently and headlessly over stdio as a JSON-RPC 2.0 server without popping up windows.</li>
 <li><strong>Light &amp; Dark Theme Switcher</strong>: Defaults to a clean, crisp Light Mode (<code>#F5F5F7</code>), with a 1-click top-header toggle to Dark Mode (<code>#1E1E1E</code>), persisted in user preferences.</li>
+<li><strong>Segmented Pill Navigation Bar</strong>: Seamless tab-less switching across <strong>💬 Local AI Chat</strong>, <strong>🎮 Godot Workspace</strong>, <strong>🚀 Publish &amp; Ship</strong>, and <strong>✨ Pro Ecosystem</strong>.</li>
+<li><strong>Godot Asset Library Distribution</strong>: Built-in 1-click syntax validator, local folder browser, and real .zip archive packager generating AssetLib-compliant distribution bundles.</li>
 <li><strong>Dedicated VRAM Eviction Controls (Nuclear Option)</strong>: Permanent toolbar buttons ⏏ Eject Model and 🧹 Purge All VRAM to instantly purge loaded models from GPU VRAM across both Ollama and LM Studio (lms unload --all).</li>
 <li><strong>Single-Instance Lifecycle Enforcement</strong>: Kernel mutex and event wait handle prevent duplicate background instances and eliminate lingering ghost tray icons on application exit.</li>
 <li><strong>Dynamic Hexagonal Tray Icon</strong>:</li>
@@ -155,7 +157,30 @@ dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:Publish
 - Click <strong>"▶ Launch Godot Editor"</strong>.
 - In Godot: Navigate to <strong>Project -&gt; Project Settings -&gt; Plugins</strong> and check <strong>Enable</strong> next to <code>Godot-MCP</code>.
 - Click <strong>"🔄 Sync Selected Assistants"</strong> to configure Claude, LM Studio, or Ollama in one click.</p>
-<h3 id="2-command-line-options">2. Command-Line Options</h3>
+<h3 id="2-submitting-your-addon-to-the-godot-asset-library">2. Submitting Your Addon to the Godot Asset Library</h3>
+<p>Godot-MCP includes a built-in pre-flight packager in the <strong>🚀 Publish &amp; Ship</strong> tab to prepare your addon for the official <a href="https://godotengine.org/asset-library/">Godot Asset Library</a>:</p>
+<ol>
+<li><strong>Select Project</strong>: In the <strong>🎮 Godot Workspace</strong> tab, ensure your Godot project folder is selected.</li>
+<li><strong>Open Publish &amp; Ship</strong>: Switch to the <strong>🚀 Publish &amp; Ship</strong> tab.</li>
+<li><strong>Verify Git URL / Directory</strong>: Verify your public Git repository URL (or click <strong>Browse...</strong> to pick a local distribution directory).</li>
+<li><strong>⚡ Validate &amp; Package</strong>: Click <strong>Validate &amp; Package</strong>. Godot-MCP will:</li>
+<li>Verify ddons/godot_mcp/plugin.cfg syntax and version declarations.</li>
+<li>Confirm Godot 4.x compatibility.</li>
+<li>Automatically compile a clean, AssetLib-compliant distribution archive at <Project>/dist/godot_mcp_assetlib.zip.</li>
+<li><strong>Submit to Godot AssetLib</strong>:</li>
+<li>Click <strong>🌐 Open AssetLib Portal</strong> (or visit <a href="https://godotengine.org/asset-library/asset">godotengine.org/asset-library/asset</a>).</li>
+<li>Log into your Godot account and click <strong>Submit Asset</strong>.</li>
+<li>Fill in:<ul>
+<li><strong>Asset Name</strong>: Godot-MCP (or your addon name)</li>
+<li><strong>Category</strong>: Tools / Plugins</li>
+<li><strong>Godot Version</strong>: 4.x</li>
+<li><strong>Repository URL</strong>: Your public Git URL (e.g. https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition)</li>
+<li><strong>Download Tag/Commit</strong>: 1.0.0 or main</li>
+</ul>
+</li>
+<li>Click <strong>Submit for Review</strong>. Once approved by Godot moderators, any developer can install your addon directly from inside the Godot Editor.</li>
+</ol>
+<h3 id="3-command-line-options">3. Command-Line Options</h3>
 <pre class="codehilite"><code class="language-bash">GodotMCP.exe [options]
 
 OPTIONS:

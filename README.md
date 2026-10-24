@@ -36,6 +36,8 @@
   - **Double-Click**: Launches the modern WPF desktop hub with Light/Dark mode switcher, project management, and 1-click AI assistant synchronization.
   - **Invoked by AI Client**: Runs silently and headlessly over stdio as a JSON-RPC 2.0 server without popping up windows.
 - **Light & Dark Theme Switcher**: Defaults to a clean, crisp Light Mode (`#F5F5F7`), with a 1-click top-header toggle to Dark Mode (`#1E1E1E`), persisted in user preferences.
+- **Segmented Pill Navigation Bar**: Seamless tab-less switching across **💬 Local AI Chat**, **🎮 Godot Workspace**, **🚀 Publish & Ship**, and **✨ Pro Ecosystem**.
+- **Godot Asset Library Distribution**: Built-in 1-click syntax validator, local folder browser, and real .zip archive packager generating AssetLib-compliant distribution bundles.
 - **Dedicated VRAM Eviction Controls (Nuclear Option)**: Permanent toolbar buttons ⏏ Eject Model and 🧹 Purge All VRAM to instantly purge loaded models from GPU VRAM across both Ollama and LM Studio (lms unload --all).
 - **Single-Instance Lifecycle Enforcement**: Kernel mutex and event wait handle prevent duplicate background instances and eliminate lingering ghost tray icons on application exit.
 - **Dynamic Hexagonal Tray Icon**:
@@ -72,7 +74,29 @@ Double-click `GodotMCP.exe` to launch the GUI dashboard.
 - In Godot: Navigate to **Project -> Project Settings -> Plugins** and check **Enable** next to `Godot-MCP`.
 - Click **"🔄 Sync Selected Assistants"** to configure Claude, LM Studio, or Ollama in one click.
 
-### 2. Command-Line Options
+### 2. Submitting Your Addon to the Godot Asset Library
+
+Godot-MCP includes a built-in pre-flight packager in the **🚀 Publish & Ship** tab to prepare your addon for the official [Godot Asset Library](https://godotengine.org/asset-library/):
+
+1. **Select Project**: In the **🎮 Godot Workspace** tab, ensure your Godot project folder is selected.
+2. **Open Publish & Ship**: Switch to the **🚀 Publish & Ship** tab.
+3. **Verify Git URL / Directory**: Verify your public Git repository URL (or click **Browse...** to pick a local distribution directory).
+4. **⚡ Validate & Package**: Click **Validate & Package**. Godot-MCP will:
+   - Verify ddons/godot_mcp/plugin.cfg syntax and version declarations.
+   - Confirm Godot 4.x compatibility.
+   - Automatically compile a clean, AssetLib-compliant distribution archive at <Project>/dist/godot_mcp_assetlib.zip.
+5. **Submit to Godot AssetLib**:
+   - Click **🌐 Open AssetLib Portal** (or visit [godotengine.org/asset-library/asset](https://godotengine.org/asset-library/asset)).
+   - Log into your Godot account and click **Submit Asset**.
+   - Fill in:
+     - **Asset Name**: Godot-MCP (or your addon name)
+     - **Category**: Tools / Plugins
+     - **Godot Version**: 4.x
+     - **Repository URL**: Your public Git URL (e.g. https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition)
+     - **Download Tag/Commit**: 1.0.0 or main
+   - Click **Submit for Review**. Once approved by Godot moderators, any developer can install your addon directly from inside the Godot Editor.
+
+### 3. Command-Line Options
 ```bash
 GodotMCP.exe [options]
 

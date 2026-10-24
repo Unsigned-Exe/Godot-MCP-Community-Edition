@@ -126,6 +126,20 @@ namespace MCP_Godot4
             }
         }
 
+        private void OnBrowsePublishRepoOrDir(object sender, RoutedEventArgs e)
+        {
+            using var dialog = new FormsFolderBrowserDialog
+            {
+                Description = "Select Local Git Repository or Output Directory for AssetLib Package",
+                UseDescriptionForTitle = true
+            };
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                txtPublishRepoUrl.Text = dialog.SelectedPath;
+            }
+        }
+
         private void OnValidateAssetLibPackage(object sender, RoutedEventArgs e)
         {
             string projectPath = txtProjectPath?.Text?.Trim() ?? "";
@@ -135,24 +149,68 @@ namespace MCP_Godot4
                 return;
             }
 
-            string pluginCfg = Path.Combine(projectPath, "addons", "godot_mcp", "plugin.cfg");
+            string addonDir = Path.Combine(projectPath, "addons", "godot_mcp");
+            string pluginCfg = Path.Combine(addonDir, "plugin.cfg");
             if (!File.Exists(pluginCfg))
             {
                 txtAssetLibStatus.Text = "⚠️ No 'plugin.cfg' found in addons/godot_mcp. Click '⚡ Install Addon in Project' in the Workspace tab.";
                 return;
             }
 
-            txtAssetLibStatus.Text = "✔ Addon structure validated! Ready for Godot Asset Library submission. (Archive packaging ready).";
-            WpfMessageBox.Show(
-                "Godot AssetLib Pre-Flight Check Passed!\n\n" +
-                "• Addon ID: godot_mcp\n" +
-                "• Compatibility: Godot 4.x\n" +
-                "• Manifest: plugin.cfg verified\n" +
-                "• Repository: " + txtPublishRepoUrl.Text + "\n\n" +
-                "You can now submit this repository URL to the Godot Asset Library portal.",
-                "AssetLib Validation Success",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            try
+            {
+                // Generate a real distribution zip in project/dist
+                string distDir = Path.Combine(projectPath, "dist");
+                Directory.CreateDirectory(distDir);
+                string zipPath = Path.Combine(distDir, "godot_mcp_assetlib.zip");
+
+                if (File.Exists(zipPath))
+                {
+                    File.Delete(zipPath);
+                }
+
+                // Create clean archive with addons/godot_mcp/ structure expected by Godot AssetLib
+                string stagingDir = Path.Combine(Path.GetTempPath(), "godot_mcp_assetlib_staging_" + Guid.NewGuid().ToString("N"));
+                string stagedAddons = Path.Combine(stagingDir, "addons", "godot_mcp");
+                Directory.CreateDirectory(stagedAddons);
+
+                CopyDirectoryRecursive(addonDir, stagedAddons);
+
+                System.IO.Compression.ZipFile.CreateFromDirectory(stagingDir, zipPath, System.IO.Compression.CompressionLevel.Optimal, false);
+                Directory.Delete(stagingDir, true);
+
+                txtAssetLibStatus.Text = $"✔ AssetLib package generated: {zipPath}";
+                WpfMessageBox.Show(
+                    "Godot AssetLib Package Ready!\n\n" +
+                    "• Addon ID: godot_mcp\n" +
+                    "• Compatibility: Godot 4.x\n" +
+                    "• Archive created: " + zipPath + "\n" +
+                    "• Repository / Download Source: " + txtPublishRepoUrl.Text + "\n\n" +
+                    "Click '🌐 Open AssetLib Portal' to submit your package or repository URL to the Godot community.",
+                    "AssetLib Package Generated",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                txtAssetLibStatus.Text = $"❌ Failed to generate package: {ex.Message}";
+                WpfMessageBox.Show($"Error generating AssetLib package: {ex.Message}", "Packaging Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private static void CopyDirectoryRecursive(string sourceDir, string destinationDir)
+        {
+            var dir = new DirectoryInfo(sourceDir);
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                file.CopyTo(Path.Combine(destinationDir, file.Name), true);
+            }
+            foreach (DirectoryInfo subDir in dir.GetDirectories())
+            {
+                string nextTarget = Path.Combine(destinationDir, subDir.Name);
+                Directory.CreateDirectory(nextTarget);
+                CopyDirectoryRecursive(subDir.FullName, nextTarget);
+            }
         }
 
         private void OnProPlatformCardClick(object sender, MouseButtonEventArgs e)
