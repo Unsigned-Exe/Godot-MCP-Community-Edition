@@ -574,7 +574,7 @@
 
                                     <!-- Download / Repository URL -->
                                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Git Repository:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
-                                    <TextBox x:Name="txtPublishRepoUrl" Grid.Row="2" Grid.Column="1" Text="https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition" Style="{StaticResource ModernTextBox}" Height="28" Margin="0,0,8,0" />
+                                    <TextBox x:Name="txtPublishRepoUrl" Grid.Row="2" Grid.Column="1" Text="https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" Margin="0,0,8,0" />
                                     <Button Grid.Row="2" Grid.Column="2" Content="⚡ Validate &amp; Package" Click="OnValidateAssetLibPackage" Height="28" Padding="12,0" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" />
                                 </Grid>
                             </Border>
