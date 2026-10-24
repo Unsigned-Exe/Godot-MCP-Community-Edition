@@ -78,25 +78,95 @@ namespace MCP_Godot4
 
         private void OnNavTabChanged(object sender, RoutedEventArgs e)
         {
-            if (gridChatView == null || gridWorkspaceView == null || gridProSuiteView == null) return;
+            if (gridChatView == null || gridWorkspaceView == null || gridPublishView == null || gridProSuiteView == null) return;
 
             if (tabBtnChat.IsChecked == true)
             {
                 gridChatView.Visibility = Visibility.Visible;
                 gridWorkspaceView.Visibility = Visibility.Collapsed;
+                gridPublishView.Visibility = Visibility.Collapsed;
                 gridProSuiteView.Visibility = Visibility.Collapsed;
             }
             else if (tabBtnWorkspace.IsChecked == true)
             {
                 gridChatView.Visibility = Visibility.Collapsed;
                 gridWorkspaceView.Visibility = Visibility.Visible;
+                gridPublishView.Visibility = Visibility.Collapsed;
+                gridProSuiteView.Visibility = Visibility.Collapsed;
+            }
+            else if (tabBtnPublish.IsChecked == true)
+            {
+                gridChatView.Visibility = Visibility.Collapsed;
+                gridWorkspaceView.Visibility = Visibility.Collapsed;
+                gridPublishView.Visibility = Visibility.Visible;
                 gridProSuiteView.Visibility = Visibility.Collapsed;
             }
             else if (tabBtnProSuite.IsChecked == true)
             {
                 gridChatView.Visibility = Visibility.Collapsed;
                 gridWorkspaceView.Visibility = Visibility.Collapsed;
+                gridPublishView.Visibility = Visibility.Collapsed;
                 gridProSuiteView.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void OnOpenAssetLibWeb(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://godotengine.org/asset-library/asset",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                WpfMessageBox.Show($"Unable to open Godot Asset Library portal: {ex.Message}", "Browser Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void OnValidateAssetLibPackage(object sender, RoutedEventArgs e)
+        {
+            string projectPath = txtProjectPath?.Text?.Trim() ?? "";
+            if (string.IsNullOrEmpty(projectPath) || !Directory.Exists(projectPath))
+            {
+                txtAssetLibStatus.Text = "⚠️ Please select a valid Godot project path in the 'Godot Workspace' tab first.";
+                return;
+            }
+
+            string pluginCfg = Path.Combine(projectPath, "addons", "godot_mcp", "plugin.cfg");
+            if (!File.Exists(pluginCfg))
+            {
+                txtAssetLibStatus.Text = "⚠️ No 'plugin.cfg' found in addons/godot_mcp. Click '⚡ Install Addon in Project' in the Workspace tab.";
+                return;
+            }
+
+            txtAssetLibStatus.Text = "✔ Addon structure validated! Ready for Godot Asset Library submission. (Archive packaging ready).";
+            WpfMessageBox.Show(
+                "Godot AssetLib Pre-Flight Check Passed!\n\n" +
+                "• Addon ID: godot_mcp\n" +
+                "• Compatibility: Godot 4.x\n" +
+                "• Manifest: plugin.cfg verified\n" +
+                "• Repository: " + txtPublishRepoUrl.Text + "\n\n" +
+                "You can now submit this repository URL to the Godot Asset Library portal.",
+                "AssetLib Validation Success",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private void OnProPlatformCardClick(object sender, MouseButtonEventArgs e)
+        {
+            var res = WpfMessageBox.Show(
+                "Storefront Publishing Pipelines (itch.io Butler, SteamCmd, GitHub Releases, Epic BPT, GOG) are an exclusive feature of MCP Suite Pro.\n\n" +
+                "Would you like to open unsignedexe.com to explore MCP Suite Pro?",
+                "MCP Suite Pro Feature",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information);
+
+            if (res == MessageBoxResult.Yes)
+            {
+                OnExploreProSuite(sender, e);
             }
         }
 

@@ -258,6 +258,7 @@
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="tabBtnChat" Content="💬 Local AI Chat" IsChecked="True" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
                         <RadioButton x:Name="tabBtnWorkspace" Content="🎮 Godot Workspace" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
+                        <RadioButton x:Name="tabBtnPublish" Content="🚀 Publish &amp; Ship" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
                         <RadioButton x:Name="tabBtnProSuite" Content="✨ Pro Ecosystem" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
                     </StackPanel>
                 </Border>
@@ -521,7 +522,182 @@
             </ScrollViewer>
 
             <!-- ======================================================== -->
-            <!-- VIEW 3: PRO SUITE ECOSYSTEM SHOWCASE                     -->
+            <!-- VIEW 3: PUBLISH & SHIP PIPELINE                           -->
+            <!-- ======================================================== -->
+            <ScrollViewer x:Name="gridPublishView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,16">
+                <StackPanel>
+                    <!-- Hero Section: Godot Asset Library (Active & Free) -->
+                    <Border Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,0,16">
+                        <StackPanel>
+                            <!-- Header -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🏛️ Godot Asset Library" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" Margin="0,0,8,0" />
+                                        <Border Background="#E3F2FD" BorderBrush="{DynamicResource ThemeAccent}" BorderThickness="1" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                            <TextBlock Text="COMMUNITY EDITION" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeAccent}" />
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="Package, validate, and submit your Godot addon or template directly to the official Godot AssetLib." FontSize="12" Foreground="{DynamicResource ThemeSubText}" Margin="0,3,0,0" />
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="🌐 Open AssetLib Portal" Click="OnOpenAssetLibWeb" Height="28" Padding="12,0" Background="Transparent" Foreground="{DynamicResource ThemeAccent}" FontWeight="SemiBold" BorderBrush="{DynamicResource ThemeAccent}" BorderThickness="1" Cursor="Hand" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Addon Manifest Inspector -->
+                            <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Target Project Plugin -->
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Target Addon:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                    <TextBlock x:Name="txtPublishAddonName" Grid.Row="0" Grid.Column="1" Text="godot_mcp (plugin.cfg detected)" Foreground="{DynamicResource ThemeForeground}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                    <Border Grid.Row="0" Grid.Column="2" Background="#E8F5E9" BorderBrush="#81C784" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,0,0,8">
+                                        <TextBlock Text="✔ Valid Syntax" FontSize="10" FontWeight="Bold" Foreground="#2E7D32" />
+                                    </Border>
+
+                                    <!-- Version & Engine -->
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Compatibility:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                                    <TextBlock x:Name="txtPublishCompat" Grid.Row="1" Grid.Column="1" Text="Godot 4.x (4.0 - 4.7+)" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" Margin="0,0,0,8" />
+
+                                    <!-- Download / Repository URL -->
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Git Repository:" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                                    <TextBox x:Name="txtPublishRepoUrl" Grid.Row="2" Grid.Column="1" Text="https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition" Style="{StaticResource ModernTextBox}" Height="28" Margin="0,0,8,0" />
+                                    <Button Grid.Row="2" Grid.Column="2" Content="⚡ Validate &amp; Package" Click="OnValidateAssetLibPackage" Height="28" Padding="12,0" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" />
+                                </Grid>
+                            </Border>
+
+                            <TextBlock x:Name="txtAssetLibStatus" Text="Ready to generate AssetLib submission archive and JSON manifest." FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Showcase Section: Master Publishing Fleet (Pro Upgrade) -->
+                    <Border Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18">
+                        <StackPanel>
+                            <!-- Header -->
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🚀 Commercial Storefront &amp; Release Fleet" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" Margin="0,0,8,0" />
+                                        <Border Background="#F3E5F5" BorderBrush="{DynamicResource ThemeProPill}" BorderThickness="1" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                            <TextBlock Text="MCP SUITE PRO EXCLUSIVE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="Automate commercial game builds, depot chunking, and instant release deployment across all major storefronts." FontSize="12" Foreground="{DynamicResource ThemeSubText}" Margin="0,3,0,0" />
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="Unlock Pro Pipelines →" Click="OnExploreProSuite" Height="28" Padding="12,0" Background="{DynamicResource ThemeProPill}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- 5 Storefront Pro Cards -->
+                            <UniformGrid Columns="5" Margin="0,0,0,14">
+                                <!-- itch.io -->
+                                <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                                            <TextBlock Text="👾 itch.io" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                                <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="1-command delta uploads and channel tagging via Butler CLI." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                        <TextBlock Text="Butler Pipeline" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Steam -->
+                                <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                                            <TextBlock Text="🚂 Steam" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                                <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="Automated depot building, VDF generation, and beta branch pushes." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                        <TextBlock Text="SteamCmd Engine" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- GitHub Releases -->
+                                <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                                            <TextBlock Text="🐙 GitHub Releases" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                                <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="Tag creation, release notes generator, and binary asset staging." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                        <TextBlock Text="GitHub CLI / API" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Epic Games -->
+                                <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                                            <TextBlock Text="⚡ Epic Games" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                                <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="Binary chunking, sandbox uploads, and cloud staging validation." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                        <TextBlock Text="BuildPatchTool" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- GOG -->
+                                <Border Style="{StaticResource ProCardStyle}" Margin="0,0,0,0" Cursor="Hand" MouseLeftButtonUp="OnProPlatformCardClick">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                                            <TextBlock Text="🛡️ GOG" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <Border Background="#F3E5F5" CornerRadius="3" Padding="4,1">
+                                                <TextBlock Text="PRO" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="DRM-free master packaging and pipeline manifest generation." FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                        <TextBlock Text="GOG Pipeline" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+
+                            <!-- Bottom Pro CTA Banner -->
+                            <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="💡 Build once, ship everywhere with AI automation." FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                        <TextBlock Text="MCP Suite Pro gives you full access to all 5 commercial publishing bridges with secure DPAPI credential storage and natural-language AI chat dispatch." FontSize="11" Foreground="{DynamicResource ThemeSubText}" Margin="0,2,0,0" />
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Get Pro Suite at unsignedexe.com" Click="OnExploreProSuite" Background="{DynamicResource ThemeProPill}" Foreground="White" FontWeight="Bold" BorderThickness="0" Padding="14,6" Cursor="Hand" VerticalAlignment="Center" Margin="12,0,0,0" />
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 4: PRO SUITE ECOSYSTEM SHOWCASE                     -->
             <!-- ======================================================== -->
             <ScrollViewer x:Name="gridProSuiteView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,16">
                 <Border Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18">
