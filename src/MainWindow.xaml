@@ -1,0 +1,672 @@
+<Window x:Class="MCP_Godot4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Godot MCP Hub — Community Edition" 
+        Height="860" Width="1200" 
+        MinHeight="700" MinWidth="1060"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource ThemeBackground}"
+        Foreground="{DynamicResource ThemeForeground}"
+        FontFamily="Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif">
+
+    <Window.Resources>
+        <!-- Dynamic Theme Brushes (Default: Light Mode) -->
+        <SolidColorBrush x:Key="ThemeBackground" Color="#F5F5F7" />
+        <SolidColorBrush x:Key="ThemeForeground" Color="#1C1C1E" />
+        <SolidColorBrush x:Key="ThemeSubText" Color="#636366" />
+        <SolidColorBrush x:Key="ThemeCardBackground" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="ThemeBorderBrush" Color="#E5E5EA" />
+        <SolidColorBrush x:Key="ThemeInputBackground" Color="#F2F2F7" />
+        <SolidColorBrush x:Key="ThemeButtonBackground" Color="#E5E5EA" />
+        <SolidColorBrush x:Key="ThemeButtonHover" Color="#D1D1D6" />
+        <SolidColorBrush x:Key="ThemeAccent" Color="#478CBF" />
+        <SolidColorBrush x:Key="ThemeAccentHover" Color="#3B739E" />
+        <SolidColorBrush x:Key="ThemeSuccess" Color="#34C759" />
+        <SolidColorBrush x:Key="ThemeWarning" Color="#FF9500" />
+        <SolidColorBrush x:Key="ThemeProPill" Color="#AF52DE" />
+
+        <!-- Card Style -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,14" />
+        </Style>
+
+        <!-- Pro Card Style (Dimmed / Showcase) -->
+        <Style x:Key="ProCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Opacity" Value="0.95" />
+        </Style>
+
+        <!-- Nav Tab Radio Button Style -->
+        <Style x:Key="NavTabButtonStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeSubText}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="12,5" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="tabBorder" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="tabBorder" Property="Background" Value="{DynamicResource ThemeCardBackground}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeAccent}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Quick Prompt Chip Button Style -->
+        <Style x:Key="ChipButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeInputBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="chipBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="chipBorder" Property="Background" Value="{DynamicResource ThemeButtonHover}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern ComboBoxItem Style -->
+        <Style x:Key="ModernComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="itemBorder" Background="Transparent" CornerRadius="4" Margin="2,1" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter TextElement.Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource ThemeButtonHover}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource ThemeAccent}" />
+                                <Setter Property="TextElement.Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource ThemeAccentHover}" />
+                                <Setter Property="TextElement.Foreground" Value="#FFFFFF" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern ComboBox ToggleButton Template -->
+        <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="ToggleButton">
+            <Border x:Name="toggleBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="28" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Arrow Glyph -->
+                    <Path x:Name="arrow" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource ThemeForeground}" Data="M 0 0 L 4 4 L 8 0 Z" Margin="0,0,4,0" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="toggleBorder" Property="BorderBrush" Value="{DynamicResource ThemeAccent}" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="toggleBorder" Property="BorderBrush" Value="{DynamicResource ThemeAccent}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Modern Themed ComboBox Style -->
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource ThemeInputBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ModernComboBoxItemStyle}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid x:Name="mainGrid" SnapsToDevicePixels="True">
+                            <ToggleButton x:Name="toggleButton"
+                                          Template="{StaticResource ComboBoxToggleButtonTemplate}"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press" />
+
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="10,0,30,0"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              IsHitTestVisible="False">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource ThemeForeground}" />
+                                    </Style>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   PopupAnimation="Fade"
+                                   Focusable="False">
+                                <Border x:Name="dropDownBorder"
+                                        MinWidth="{Binding ActualWidth, ElementName=mainGrid}"
+                                        MaxHeight="260"
+                                        Background="{DynamicResource ThemeCardBackground}"
+                                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="3"
+                                        Margin="0,2,0,0">
+                                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Default ComboBox Style -->
+        <Style TargetType="ComboBox" BasedOn="{StaticResource ModernComboBoxStyle}" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- Top Header -->
+            <RowDefinition Height="*" />    <!-- Active View Area -->
+            <RowDefinition Height="Auto" /> <!-- Status Bar -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. Top Header -->
+        <Border Grid.Row="0" Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Branding -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="38" Height="38" CornerRadius="8" Background="{DynamicResource ThemeAccent}" Margin="0,0,12,0">
+                        <TextBlock Text="🤖" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Godot MCP Hub" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" Margin="0,0,8,0" />
+                            <Border Background="{DynamicResource ThemeAccent}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                <TextBlock Text="COMMUNITY EDITION" FontSize="9" FontWeight="Bold" Foreground="White" />
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Text="Free &amp; Open Source MCP Server for Godot 4.x" FontSize="11" Foreground="{DynamicResource ThemeSubText}" Margin="0,1,0,0" TextTrimming="CharacterEllipsis" MaxWidth="320" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Center: Segmented Navigation Pills -->
+                <Border Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="14,0" Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="3">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="tabBtnChat" Content="💬 Local AI Chat" IsChecked="True" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
+                        <RadioButton x:Name="tabBtnWorkspace" Content="🎮 Godot Workspace" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
+                        <RadioButton x:Name="tabBtnProSuite" Content="✨ Pro Ecosystem" Style="{StaticResource NavTabButtonStyle}" Checked="OnNavTabChanged" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Right: Status Badge & Theme Switcher -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Status Badge -->
+                    <Border x:Name="borderStatus" Background="#E8F5E9" BorderBrush="#81C784" BorderThickness="1" CornerRadius="14" Padding="10,5" Margin="0,0,12,0" MaxWidth="280">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse x:Name="ellipseStatusDot" Width="8" Height="8" Fill="#4CAF50" Margin="0,0,6,0" />
+                            <TextBlock x:Name="txtStatusBadge" Text="Editor: Connected (Port 6505)" FontSize="11" FontWeight="SemiBold" Foreground="#2E7D32" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Theme Toggle Radio Buttons -->
+                    <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="6,4">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <RadioButton x:Name="rbLight" Content="Light" IsChecked="True" Checked="OnThemeChanged" Margin="0,0,6,0" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" FontSize="11" />
+                            <RadioButton x:Name="rbDark" Content="Dark" Checked="OnThemeChanged" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" FontSize="11" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 2. Main Content Area (View Switcher) -->
+        <Grid Grid.Row="1">
+
+            <!-- ======================================================== -->
+            <!-- VIEW 1: FRONT & CENTER LOCAL AI CHAT                     -->
+            <!-- ======================================================== -->
+            <Grid x:Name="gridChatView" Visibility="Visible" Margin="20,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" /> <!-- Model Selector & Action Toolbar -->
+                    <RowDefinition Height="*" />    <!-- Chat Conversation History -->
+                    <RowDefinition Height="Auto" /> <!-- Quick Chips & Status -->
+                    <RowDefinition Height="Auto" /> <!-- Input Area -->
+                </Grid.RowDefinitions>
+
+                <!-- 1. Model Selector Toolbar -->
+                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Padding="12,10" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" MinWidth="180" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="🧠 Local Model:" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        </StackPanel>
+
+                        <!-- Models Dropdown -->
+                        <ComboBox x:Name="cbModels" Grid.Column="1" Height="30" MinWidth="180" VerticalContentAlignment="Center" Margin="0,0,10,0" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" SelectionChanged="OnModelSelectionChanged" />
+
+                        <!-- Provider Status Pill -->
+                        <Border x:Name="borderProviderStatus" Grid.Column="2" MaxWidth="190" Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="8,4" Margin="0,0,10,0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse x:Name="ellipseProviderDot" Width="7" Height="7" Fill="#34C759" Margin="0,0,6,0" />
+                                <TextBlock x:Name="txtProviderStatus" Text="Scanning..." FontSize="11" Foreground="{DynamicResource ThemeSubText}" MaxWidth="160" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Buttons: Unload, Purge All, Refresh & Clear -->
+                        <StackPanel Grid.Column="3" Orientation="Horizontal">
+                            <Button x:Name="btnUnloadModel" Content="⏏ Eject Model" Click="OnUnloadModelClicked" Height="30" Padding="8,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,6,0" ToolTip="Eject currently loaded model from GPU VRAM / system memory" />
+                            <Button x:Name="btnPurgeAllVram" Content="🧹 Purge All VRAM" Click="OnUnloadAllModelsClicked" Height="30" Padding="8,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,6,0" ToolTip="Nuclear Option: Purge ALL loaded models from GPU VRAM across Ollama and LM Studio" />
+                            <Button Content="🔄 Refresh" Click="OnRefreshModelsClicked" Height="30" Padding="8,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,6,0" ToolTip="Scan for running Ollama and LM Studio models" />
+                            <Button Content="🗑️ Clear Chat" Click="OnClearChatClicked" Height="30" Padding="8,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" ToolTip="Clear conversation history" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 2. Scrollable Chat History -->
+                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="12" Margin="0,0,0,10">
+                    <ScrollViewer x:Name="scrollChat" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel x:Name="pnlChatHistory">
+                            <!-- Welcome Banner -->
+                            <Border x:Name="borderWelcome" Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="🎮" FontSize="18" Margin="0,0,8,0" />
+                                        <TextBlock Text="Welcome to Godot MCP AI Chat!" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" />
+                                    </StackPanel>
+                                    <TextBlock Text="Chat with your local Ollama or LM Studio models directly within Godot MCP Hub. The model has live access to 25 Godot tools and can inspect scenes, add nodes, edit GDScript, and test your project live in the editor." FontSize="12" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                    <TextBlock Text="Try asking: 'Inspect my active scene tree', 'Add a Sprite2D named Player', or 'Check GDScript syntax'." FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccent}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- 3. Quick Prompt Chips & Live Status -->
+                <Grid Grid.Row="2" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Prompt Chips -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Quick Prompts:" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource ThemeSubText}" Margin="0,0,8,0" />
+                            <Button Content="🔍 Inspect Scene" Click="OnQuickChipClicked" Tag="Inspect the active Godot scene tree and list all nodes and their types." Style="{StaticResource ChipButtonStyle}" />
+                            <Button Content="📊 Check Status" Click="OnQuickChipClicked" Tag="Check the live connection status with Godot Editor." Style="{StaticResource ChipButtonStyle}" />
+                            <Button Content="➕ Add Node" Click="OnQuickChipClicked" Tag="Add a Sprite2D node named Player to the active scene." Style="{StaticResource ChipButtonStyle}" />
+                            <Button Content="📝 Check Syntax" Click="OnQuickChipClicked" Tag="Run a headless GDScript syntax check on the project." Style="{StaticResource ChipButtonStyle}" />
+                            <Button Content="📁 List Project Files" Click="OnQuickChipClicked" Tag="List the project files in the current Godot project." Style="{StaticResource ChipButtonStyle}" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Live Busy / Tool Execution Label -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtChatBusyStatus" Text="" FontSize="11" Foreground="{DynamicResource ThemeAccent}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ProgressBar x:Name="pbChatProgress" Width="80" Height="10" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- 4. Bottom Input Area -->
+                <Border Grid.Row="3" Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Input Box -->
+                        <TextBox x:Name="txtChatInput" Grid.Column="0" AcceptsReturn="True" MaxHeight="100" MinHeight="42" VerticalScrollBarVisibility="Auto" Padding="10,8" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="13" TextWrapping="Wrap" PreviewKeyDown="OnChatInputPreviewKeyDown" />
+
+                        <!-- Send Button -->
+                        <Button x:Name="btnSendChat" Grid.Column="1" Content="🚀 Send" Click="OnSendChatClicked" Width="90" Height="42" Margin="8,0,0,0" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" Cursor="Hand" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 2: GODOT WORKSPACE & SETTINGS VIEW                 -->
+            <!-- ======================================================== -->
+            <ScrollViewer x:Name="gridWorkspaceView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Card 1: Godot Engine 4.x Workspace -->
+                        <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,12,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="🎮 Godot Engine 4.x Workspace" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text=" (Active Host)" FontSize="12" Foreground="{DynamicResource ThemeAccent}" VerticalAlignment="Bottom" Margin="4,0,0,1" />
+                                </StackPanel>
+
+                                <!-- Engine Detection Info -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Engine Binary:" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource ThemeSubText}" Width="100" />
+                                    <TextBox x:Name="txtGodotPath" Grid.Column="1" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" />
+                                    <Button Grid.Column="2" Content="Browse..." Click="OnBrowseGodotExe" Margin="6,0,0,0" Width="70" Height="28" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" />
+                                </Grid>
+
+                                <!-- Target Project Directory -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Godot Project:" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource ThemeSubText}" Width="100" />
+                                    <TextBox x:Name="txtProjectPath" Grid.Column="1" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" />
+                                    <Button Grid.Column="2" Content="Select..." Click="OnBrowseProjectDir" Margin="6,0,0,0" Width="70" Height="28" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" />
+                                </Grid>
+
+                                <!-- WebSocket Port -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="WebSocket Port:" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource ThemeSubText}" Width="100" />
+                                    <TextBox x:Name="txtPort" Grid.Column="1" Text="6505" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" HorizontalContentAlignment="Center" />
+                                    <TextBlock Text="ws://127.0.0.1:6505 (Editor plugin communication channel)" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                                </Grid>
+
+                                <Separator Background="{DynamicResource ThemeBorderBrush}" Margin="0,0,0,14" />
+
+                                <!-- Action Buttons Row -->
+                                <WrapPanel>
+                                    <Button Content="⚡ Install Addon in Project" Click="OnInstallAddon" Height="32" Padding="14,0" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,8,8" />
+                                    <Button Content="▶ Launch Godot Editor" Click="OnLaunchEditor" Height="32" Padding="12,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,8,8" />
+                                    <Button Content="🔍 Check Syntax (Headless)" Click="OnCheckSyntax" Height="32" Padding="12,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,8,8" />
+                                    <Button Content="📁 Open Project Folder" Click="OnOpenProjectFolder" Height="32" Padding="12,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" Margin="0,0,0,8" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card 2: AI Assistant Bridges (1-Click Sync) -->
+                        <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="🧠 AI Assistant Integrations" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" Margin="0,0,0,4" />
+                                <TextBlock Text="Sync Godot MCP server to external client configs" FontSize="11" Foreground="{DynamicResource ThemeSubText}" Margin="0,0,0,12" />
+
+                                <!-- Assistant 1: Claude Desktop -->
+                                <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Claude Desktop / Claude Code" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <TextBlock Text="claude_desktop_config.json" FontSize="10" Foreground="{DynamicResource ThemeSubText}" />
+                                        </StackPanel>
+                                        <CheckBox x:Name="chkClaude" Grid.Column="1" IsChecked="True" VerticalAlignment="Center" Content="Enabled" FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Assistant 2: LM Studio -->
+                                <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="LM Studio (Local LLMs)" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <TextBlock Text=".cache/lm-studio/mcp.json" FontSize="10" Foreground="{DynamicResource ThemeSubText}" />
+                                        </StackPanel>
+                                        <CheckBox x:Name="chkLmStudio" Grid.Column="1" IsChecked="True" VerticalAlignment="Center" Content="Enabled" FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Assistant 3: Ollama -->
+                                <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,14">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Ollama (Local Models)" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                            <TextBlock Text=".ollama/mcp.json" FontSize="10" Foreground="{DynamicResource ThemeSubText}" />
+                                        </StackPanel>
+                                        <CheckBox x:Name="chkOllama" Grid.Column="1" IsChecked="True" VerticalAlignment="Center" Content="Enabled" FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Sync Button -->
+                                <Button Content="🔄 Sync Selected Assistants" Click="OnSyncAssistants" Height="32" Background="{DynamicResource ThemeAccent}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 3: PRO SUITE ECOSYSTEM SHOWCASE                     -->
+            <!-- ======================================================== -->
+            <ScrollViewer x:Name="gridProSuiteView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,16">
+                <Border Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18">
+                    <StackPanel>
+                        <!-- Section Header -->
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="✨ Expand Your Creative Pipeline" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" Margin="0,0,8,0" />
+                                    <Border Background="#F3E5F5" BorderBrush="{DynamicResource ThemeProPill}" BorderThickness="1" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                        <TextBlock Text="MCP SUITE PRO ECOSYSTEM" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Text="Connect 15+ external digital content creation tools directly to Godot Engine and AI assistants." FontSize="12" Foreground="{DynamicResource ThemeSubText}" Margin="0,3,0,0" />
+                            </StackPanel>
+
+                            <Button Grid.Column="1" Content="Get Full Suite →" Click="OnExploreProSuite" Height="28" Padding="12,0" Background="{DynamicResource ThemeProPill}" Foreground="White" FontWeight="SemiBold" BorderThickness="0" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <!-- Grid of Pro Cards -->
+                        <UniformGrid Columns="5" Margin="0,0,0,14">
+
+                            <!-- Blender -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,8">
+                                <StackPanel>
+                                    <TextBlock Text="🎨 Blender 3D" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Procedural 3D meshes, GLTF/GLB export, PBR materials" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Aseprite -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,8">
+                                <StackPanel>
+                                    <TextBlock Text="👾 Aseprite" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Pixel sprites, animation tags, sprite sheets, palettes" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Krita -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,8">
+                                <StackPanel>
+                                    <TextBlock Text="🖌️ Krita" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Concept art, UI textures, digital painting layers" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Audacity -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,8">
+                                <StackPanel>
+                                    <TextBlock Text="🔊 Audacity" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Foley audio effects, DSP chains, batch processing" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- FMOD / Wwise -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,0,8">
+                                <StackPanel>
+                                    <TextBlock Text="🎵 FMOD / Wwise" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Interactive game music, audio banks, event routing" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- DaVinci Resolve -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="🎬 DaVinci Resolve" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Cinematic cutscenes, video render pipelines" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Spine 2D -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="🦴 Spine 2D" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="2D skeletal rigging, mesh deformation, skin slots" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Visual Studio -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="💻 Visual Studio" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="C# script Roslyn builds, solutions, debugging" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- LibreOffice -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="📄 LibreOffice" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="GDD bibles, localization tables, dialog spreadsheets" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- FFmpeg -->
+                            <Border Style="{StaticResource ProCardStyle}" Margin="0,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="🎞️ FFmpeg" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeForeground}" />
+                                    <TextBlock Text="Asset transcoding, GIF previews, audio extraction" FontSize="10" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,4,0,8" />
+                                    <TextBlock Text="[PRO SUITE]" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeProPill}" />
+                                </StackPanel>
+                            </Border>
+
+                        </UniformGrid>
+
+                        <!-- Bottom Banner -->
+                        <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="💡 The Full MCP Suite includes live bridges for all 16 applications, multi-machine remote management, and automated background sync." VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource ThemeSubText}" />
+                                <Button Grid.Column="1" Content="Learn More at unsignedexe.com" Click="OnExploreProSuite" Background="Transparent" Foreground="{DynamicResource ThemeAccent}" FontWeight="SemiBold" BorderThickness="0" Margin="8,0,0,0" Cursor="Hand" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+
+        </Grid>
+
+        <!-- 3. Status Bar -->
+        <Border Grid.Row="2" Background="{DynamicResource ThemeCardBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,1,0,0" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="txtFooterLog" Text="Ready. Godot-MCP Community Edition running." FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="Unsigned Exe Studios © 2026 • MIT License" FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

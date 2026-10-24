@@ -1,0 +1,22 @@
+# .NET build output
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Godot engine cache
+.godot/
+*.translation
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Dist output (release binaries are uploaded to GitHub Releases, not git repo)
+dist/
+*.pdb
+*.exe
+*.dll

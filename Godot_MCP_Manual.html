@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Godot-MCP — Official Manual &amp; Reference (Community Edition)</title>
+    <style>
+        :root {
+            --bg-page: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-main: #1f2328;
+            --text-muted: #656d76;
+            --border-color: #d0d7de;
+            --accent-blue: #478cbf;
+            --code-bg: #f6f8fa;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-page: #0f1117;
+                --bg-card: #161822;
+                --text-main: #e6edf3;
+                --text-muted: #8b949e;
+                --border-color: #30363d;
+                --accent-blue: #58a6ff;
+                --code-bg: #1c2128;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4 {
+            color: var(--accent-blue);
+            margin-top: 1.8em;
+            margin-bottom: 0.6em;
+            font-weight: 600;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.2em; }
+        p, ul, ol { margin-bottom: 1.2em; }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-bottom: 1.5em;
+        }
+        pre code { background: none; border: none; padding: 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 0.92em;
+        }
+        th { background: var(--code-bg); font-weight: 600; }
+        blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding: 10px 16px;
+            color: var(--text-muted);
+            background: var(--code-bg);
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 1.2em;
+        }
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 2em 0; }
+        @media print {
+            body { background: #fff; color: #000; padding: 20px; }
+            h1, h2, h3 { color: #111; page-break-after: avoid; }
+            table, pre { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+<p>﻿# Godot-MCP — Model Context Protocol Server &amp; GUI Hub for Godot Engine 4.x
+<em>(Community Edition — Free &amp; Open Source under MIT)</em></p>
+<p><a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
+<a href="https://godotengine.org"><img alt="Godot 4.x" src="https://img.shields.io/badge/Godot-4.x-478cbf?logo=godotengine&amp;logoColor=white" /></a>
+<a href="https://dotnet.microsoft.com"><img alt=".NET 8" src="https://img.shields.io/badge/.NET-8.0-512bd4?logo=dotnet&amp;logoColor=white" /></a>
+<a href="https://unsignedexe.com"><img alt="Studio: Unsigned Exe" src="https://img.shields.io/badge/Studio-Unsigned%20Exe-00f0ff" /></a></p>
+<p><strong>Godot-MCP (Community Edition)</strong> is an open-source, portable desktop GUI hub and <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> server that connects local and cloud AI assistants (<strong>Claude Desktop / Code</strong>, <strong>LM Studio</strong>, <strong>Ollama</strong>, <strong>Cursor</strong>, <strong>Antigravity</strong>) directly into the active <strong>Godot Engine 4.x Editor</strong>.</p>
+<pre class="codehilite"><code>   ┌─────────────────────────────────────────────────────────┐
+   │ AI Coding Assistant (Claude, LM Studio, Ollama, etc.)    │
+   └──────────────────────────┬──────────────────────────────┘
+                              │ Standard MCP (stdio JSON-RPC 2.0)
+                              ▼
+   ┌─────────────────────────────────────────────────────────┐
+   │         GodotMCP.exe (GUI Hub &amp; Stdio Bridge)           │
+   │  • Light / Dark Modern Theme with Instant Switcher      │
+   │  • 1-Click Sync to Claude, LM Studio, and Ollama        │
+   │  • Dynamic System Tray State Icon (Blue/Green/Amber)    │
+   └──────────────────────────┬──────────────────────────────┘
+                              │ Bidirectional WebSocket (ws://127.0.0.1:6505)
+                              ▼
+   ┌─────────────────────────────────────────────────────────┐
+   │       Godot Editor 4.x (Active Scene / GDScript)        │
+   │               addons/godot_mcp plugin                   │
+   └─────────────────────────────────────────────────────────┘
+</code></pre>
+
+<hr />
+<h2 id="highlights">Highlights</h2>
+<ul>
+<li><strong>Dual-Mode Executable</strong>:</li>
+<li><strong>Double-Click</strong>: Launches the modern WPF desktop hub with Light/Dark mode switcher, project management, and 1-click AI assistant synchronization.</li>
+<li><strong>Invoked by AI Client</strong>: Runs silently and headlessly over stdio as a JSON-RPC 2.0 server without popping up windows.</li>
+<li><strong>Light &amp; Dark Theme Switcher</strong>: Defaults to a clean, crisp Light Mode (<code>#F5F5F7</code>), with a 1-click top-header toggle to Dark Mode (<code>#1E1E1E</code>), persisted in user preferences.</li>
+<li><strong>Dedicated VRAM Eviction Controls (Nuclear Option)</strong>: Permanent toolbar buttons ⏏ Eject Model and 🧹 Purge All VRAM to instantly purge loaded models from GPU VRAM across both Ollama and LM Studio (lms unload --all).</li>
+<li><strong>Single-Instance Lifecycle Enforcement</strong>: Kernel mutex and event wait handle prevent duplicate background instances and eliminate lingering ghost tray icons on application exit.</li>
+<li><strong>Dynamic Hexagonal Tray Icon</strong>:</li>
+<li>🔵 <strong>Blue</strong>: Waiting for Godot Editor to connect on port 6505.</li>
+<li>🟢 <strong>Green</strong>: Godot 4 Editor is connected live.</li>
+<li>🟡 <strong>Amber</strong>: AI model is actively executing a command inside Godot.</li>
+<li><strong>1-Click AI Client Sync</strong>: Automatically configures <code>claude_desktop_config.json</code>, LM Studio's <code>mcp.json</code>, and Ollama's <code>mcp.json</code>.</li>
+<li><strong>Live Godot 4 Integration</strong>: Live scene tree inspector, real-time node addition/deletion, property updates, viewport screenshot capture, and GDScript execution.</li>
+<li><strong>Pro Suite Showcase</strong>: Discover the broader <a href="https://unsignedexe.com">MCP Suite Pro</a> ecosystem (Blender, Aseprite, Krita, Audacity, FMOD, Wwise, Spine, DaVinci Resolve) directly from the lower deck.</li>
+</ul>
+<hr />
+<h2 id="quickstart">Quickstart</h2>
+<h3 id="option-1-use-the-pre-compiled-binary">Option 1: Use the Pre-Compiled Binary</h3>
+<p>Download <code>GodotMCP.exe</code> from <code>dist/</code> or the Releases page. No .NET runtime installation is required—it is 100% self-contained.</p>
+<h3 id="option-2-build-from-source">Option 2: Build from Source</h3>
+<pre class="codehilite"><code class="language-bash">git clone https://github.com/NoizeMaykr/GodotMCP.git
+cd GodotMCP/src
+dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o ../dist
+</code></pre>
+
+<hr />
+<h2 id="usage">Usage</h2>
+<h3 id="1-launch-the-desktop-hub">1. Launch the Desktop Hub</h3>
+<p>Double-click <code>GodotMCP.exe</code> to launch the GUI dashboard.
+- Select your Godot project directory.
+- Click <strong>"⚡ Install Addon in Project"</strong>.
+- Click <strong>"▶ Launch Godot Editor"</strong>.
+- In Godot: Navigate to <strong>Project -&gt; Project Settings -&gt; Plugins</strong> and check <strong>Enable</strong> next to <code>Godot-MCP</code>.
+- Click <strong>"🔄 Sync Selected Assistants"</strong> to configure Claude, LM Studio, or Ollama in one click.</p>
+<h3 id="2-command-line-options">2. Command-Line Options</h3>
+<pre class="codehilite"><code class="language-bash">GodotMCP.exe [options]
+
+OPTIONS:
+  -h, --help                 Display help information.
+  -v, --version              Display application version.
+  -p, --port &lt;port&gt;          Specify WebSocket port for Godot Editor (default: 6505).
+  --server                   Run headlessly as stdio MCP server for AI clients.
+  --tray                     Start minimized to the Windows system tray.
+  --install-addon &lt;path&gt;     Installs the godot_mcp plugin into a target project.
+</code></pre>
+
+<hr />
+<h2 id="manual-ai-client-configuration">Manual AI Client Configuration</h2>
+<p>If you prefer manual configuration, add this block to your client:</p>
+<h4 id="claude-desktop-appdataclaudeclaude_desktop_configjson">Claude Desktop (<code>%APPDATA%\Claude\claude_desktop_config.json</code>)</h4>
+<pre class="codehilite"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;godot-4-7&quot;: {
+      &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
+      &quot;args&quot;: [&quot;--server&quot;]
+    }
+  }
+}
+</code></pre>
+
+<h4 id="lm-studio-userprofilecachelm-studiomcpjson">LM Studio (<code>%USERPROFILE%\.cache\lm-studio\mcp.json</code>)</h4>
+<pre class="codehilite"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;godot-4-7&quot;: {
+      &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
+      &quot;args&quot;: [&quot;--server&quot;]
+    }
+  }
+}
+</code></pre>
+
+<h4 id="ollama-userprofileollamamcpjson">Ollama (<code>%USERPROFILE%\.ollama\mcp.json</code>)</h4>
+<pre class="codehilite"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;godot-4-7&quot;: {
+      &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
+      &quot;args&quot;: [&quot;--server&quot;]
+    }
+  }
+}
+</code></pre>
+
+<hr />
+<h2 id="tool-reference-25-tools">Tool Reference (25 Tools)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tool Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>godot_get_status</code></td>
+<td style="text-align: left;">Returns Godot Editor WebSocket connection state, port, and engine binary.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_create_project</code></td>
+<td style="text-align: left;">Programmatically creates a new Godot 4 project directory with <code>project.godot</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_launch_editor</code></td>
+<td style="text-align: left;">Launches the Godot 4 Editor for the specified project.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_run_project</code></td>
+<td style="text-align: left;">Runs and plays the active game project.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_check_syntax</code></td>
+<td style="text-align: left;">Performs fast headless GDScript syntax validation (<code>--check-only</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_read_file</code></td>
+<td style="text-align: left;">Reads file text content from the project directory.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_write_file</code></td>
+<td style="text-align: left;">Writes or updates arbitrary project files.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_delete_file</code></td>
+<td style="text-align: left;">Safely removes files along with their <code>.import</code> and <code>.uid</code> metadata.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_list_project_files</code></td>
+<td style="text-align: left;">Enumerates project assets and scripts, ignoring cache folders.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_write_script</code></td>
+<td style="text-align: left;">Creates or replaces a <code>.gd</code> script.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_edit_script_snippet</code></td>
+<td style="text-align: left;">Replaces an isolated snippet in an existing GDScript file.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_append_to_script</code></td>
+<td style="text-align: left;">Appends code cleanly to the end of a GDScript file.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_create_scene</code></td>
+<td style="text-align: left;">Generates a valid <code>.tscn</code> text scene file with designated root node type.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_execute_editor_script</code></td>
+<td style="text-align: left;">Executes arbitrary GDScript live inside the running Godot Editor.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_get_scene_tree</code></td>
+<td style="text-align: left;">Fetches the complete node hierarchy of the active editor scene tab.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_add_node</code></td>
+<td style="text-align: left;">Adds a child node live to the currently open scene tree.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_delete_node</code></td>
+<td style="text-align: left;">Removes a node live from the current scene.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_update_node_property</code></td>
+<td style="text-align: left;">Edits any property on an active node in real time.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_save_active_scene</code></td>
+<td style="text-align: left;">Saves the open scene tab in the editor.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_open_scene</code></td>
+<td style="text-align: left;">Opens a designated <code>.tscn</code> file into an editor tab.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_play_current_scene</code></td>
+<td style="text-align: left;">Plays the currently active scene in a game window.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_stop_running_scene</code></td>
+<td style="text-align: left;">Stops the running scene process.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_get_editor_errors</code></td>
+<td style="text-align: left;">Reads the latest debugger and error output from the editor panel.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_get_editor_screenshot</code></td>
+<td style="text-align: left;">Captures a high-resolution screenshot of the Godot editor viewport.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>godot_call_editor_command</code></td>
+<td style="text-align: left;">Dispatches arbitrary extension methods to the <code>godot_mcp</code> plugin.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="disclaimers-hardware-safety">Disclaimers &amp; Hardware Safety</h2>
+<p>Godot MCP coordinates high-frequency tool invocations and local AI models (such as Ollama or LM Studio) which can place sustained, intensive computational loads on host hardware. The software is provided <strong>"AS IS"</strong> without warranties of any kind. </p>
+<p>Please review the full <a href="DISCLAIMER.md">Hardware Damage &amp; Workload Disclaimer</a> regarding GPU thermal safety, power delivery requirements, and limitations of liability.</p>
+<hr />
+<h2 id="license">License</h2>
+<p>This project is licensed under the <strong>MIT License</strong> — see the <a href="LICENSE">LICENSE</a> file for details.</p>
+<p>Developed with ❤️ by <strong>Unsigned Exe Studios</strong> (<a href="https://unsignedexe.com">unsignedexe.com</a>).</p>
+<hr />
+<h1 id="disclaimers-limitations-of-liability">Disclaimers &amp; Limitations of Liability</h1>
+<blockquote>
+<p>Godot-MCP (Community Edition) | Unsigned Exe Studios</p>
+</blockquote>
+<hr />
+<h2 id="1-as-is-disclaimer-of-warranties">1. "As-Is" Disclaimer of Warranties</h2>
+<p>THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. AS REFLECTED IN THE <a href="LICENSE">MIT LICENSE</a>, THE ENTIRE RISK AS TO THE QUALITY, PERFORMANCE, AND OPERATION OF THE SOFTWARE RESTS ENTIRELY WITH THE USER.</p>
+<hr />
+<h2 id="2-high-stress-workloads-hardware-damage-disclaimer">2. High-Stress Workloads &amp; Hardware Damage Disclaimer</h2>
+<p>CERTAIN INTEGRATED WORKFLOWS, INCLUDING BUT NOT LIMITED TO LOCAL AI/LLM INFERENCE (VIA OLLAMA, LM STUDIO, OR EMBEDDED ENGINE HOOKS), 3D SCENE GENERATION, MASS ASSET SCRIPTING, AND CONTINUOUS TOOL EXECUTION LOOPS, PLACE INTENSIVE, SUSTAINED DEMANDS ON SYSTEM HARDWARE.</p>
+<p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL UNSIGNED EXE STUDIOS, ITS AUTHORS, OR CONTRIBUTORS BE LIABLE FOR ANY HARDWARE DAMAGE OR COMPONENT FAILURE WHATSOEVER, INCLUDING BUT NOT LIMITED TO:
+* <strong>THERMAL DEGRADATION, SILICON BURNOUT, OR OVERHEATING</strong> OF GRAPHICS PROCESSING UNITS (GPUs), CENTRAL PROCESSING UNITS (CPUs), OR HARDWARE ACCELERATORS;
+* <strong>POWER SUPPLY UNIT (PSU) OR VOLTAGE REGULATOR MODULE (VRM) FAILURES</strong> RESULTING FROM SUSTAINED POWER DRAW OR TRANSIENT LOAD SPIKES;
+* <strong>MOTHERBOARD, CHIPSET, VRAM, OR SYSTEM MEMORY INSTABILITY OR DEFECTS</strong>;
+* <strong>STORAGE DRIVE (SSD/NVMe/HDD) WEAR, DATA LOSS, CORRUPTION, OR FILE SYSTEM DAMAGE</strong>;
+* <strong>ACOUSTIC, FAN, OR COOLING APPARATUS WEAR OR DAMAGE</strong>.</p>
+<p>THE USER EXPRESSLY ACKNOWLEDGES AND ASSUMES ALL RISKS ASSOCIATED WITH RUNNING HIGH-COMPUTE WORKLOADS. IT IS THE USER’S SOLE RESPONSIBILITY TO MAINTAIN ADEQUATE SYSTEM COOLING, VERIFY THERMAL OPERATING LIMITS, CONFIGURE PROPER FAN CURVES, PROVIDE SUFFICIENT POWER DELIVERY, AND MAINTAIN COMPREHENSIVE DATA BACKUPS.</p>
+<hr />
+<h2 id="3-limitation-of-liability">3. Limitation of Liability</h2>
+<p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, UNDER NO CIRCUMSTANCES SHALL UNSIGNED EXE STUDIOS OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF PROFITS, LOSS OF BUSINESS, LOSS OF DATA, OR INTERRUPTED PRODUCTION), ARISING FROM ANY CAUSE OR LEGAL THEORY (WHETHER IN CONTRACT, STRICT LIABILITY, TORT INCLUDING NEGLIGENCE, OR OTHERWISE), EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</body>
+</html>
