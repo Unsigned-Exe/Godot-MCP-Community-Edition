@@ -52,13 +52,13 @@
 
 ## Quickstart
 
-### Option 1: Use the Pre-Compiled Binary
-Download `GodotMCP.exe` from `dist/` or the Releases page. No .NET runtime installation is required—it is 100% self-contained.
+### Option 1: Download from itch.io (Pre-Compiled Binary)
+Download the standalone `GodotMCP.exe` binary from **itch.io**. No .NET runtime installation is required—it is 100% self-contained.
 
 ### Option 2: Build from Source
 ```bash
-git clone https://github.com/NoizeMaykr/GodotMCP.git
-cd GodotMCP/src
+git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git
+cd Godot-MCP-Community-Edition/src
 dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o ../dist
 ```
 
