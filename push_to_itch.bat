@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo =======================================================
@@ -7,19 +7,31 @@ echo   Godot-MCP Community Edition -- itch.io Butler Dispatch
 echo =======================================================
 echo.
 
+set BUTLER_EXE=
 where butler >nul 2>nul
-if %ERRORLEVEL% neq 0 (
-    echo [ERROR] itch.io Butler CLI is not detected in your PATH.
+if %ERRORLEVEL% equ 0 (
+    set BUTLER_EXE=butler
+) else (
+    for /f "delims=" %%I in ('dir /b /s "%APPDATA%\itch\broth\butler\versions\butler.exe" 2^>nul') do (
+        set BUTLER_EXE=%%I
+    )
+)
+
+if "!BUTLER_EXE!"=="" (
+    echo [ERROR] itch.io Butler CLI is not detected on your system.
     echo.
-    echo To install Butler via WinGet:
-    echo   winget install itch.butler
-    echo.
-    echo Or download directly from:
-    echo   https://itch.io/docs/butler/installing.html
+    echo Options to install Butler:
+    echo   1. Windows Package Manager: winget install itch.butler
+    echo   2. Official itch installer: https://itch.io/docs/butler/installing.html
+    echo   3. Install the itch.io Desktop App (which bundles Butler automatically)
     echo.
     pause
     exit /b 1
 )
+
+echo [OK] Using Butler binary at: "!BUTLER_EXE!"
+"!BUTLER_EXE!" -V
+echo.
 
 set TARGET_USER=%~1
 if "%TARGET_USER%"=="" (
@@ -40,8 +52,8 @@ if not exist "%ZIP_PATH%" (
 )
 
 echo.
-echo Pushing %ZIP_PATH% to %TARGET_USER%/godot-mcp:windows-64 ...
-butler push "%ZIP_PATH%" %TARGET_USER%/godot-mcp:windows-64 --userversion 1.0.0
+echo Pushing %ZIP_PATH% to %TARGET_USER%/godot-mcp-community-edition:windows-64 ...
+"!BUTLER_EXE!" push "%ZIP_PATH%" %TARGET_USER%/godot-mcp-community-edition:windows-64 --userversion 1.0.0
 
 if %ERRORLEVEL% equ 0 (
     echo.

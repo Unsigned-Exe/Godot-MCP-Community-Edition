@@ -1,10 +1,17 @@
 [CmdletBinding()]
 param(
-    [string]$TargetUser
+    [string]$TargetUser,
+    [string]$GameSlug = "godot-mcp-community-edition"
 )
 
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# Support passing full target like "username/slug"
+if ($TargetUser -match '^([^/]+)/([^:]+)$') {
+    $GameSlug = $matches[2]
+    $TargetUser = $matches[1]
+}
 
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host "  Godot-MCP Community Edition -- itch.io Butler Dispatch" -ForegroundColor Cyan
@@ -61,7 +68,7 @@ if (-not (Test-Path $ZipPath)) {
     exit 1
 }
 
-$channel = "$TargetUser/godot-mcp:windows-64"
+$channel = "$TargetUser/${GameSlug}:windows-64"
 Write-Host "Pushing $ZipPath to $channel (version 1.0.0)..." -ForegroundColor Cyan
 
 & "$ButlerExe" push "$ZipPath" "$channel" --userversion "1.0.0"
