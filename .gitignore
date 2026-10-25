@@ -23,3 +23,5 @@ dist/
 
 # Storefront copy & internal metadata
 ITCH_STOREFRONT.md
+ITCH_STOREFRONT.html
+ITCH_STOREFRONT*.html

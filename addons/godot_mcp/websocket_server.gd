@@ -174,7 +174,7 @@ func _process(delta: float) -> void:
 				# The MCP server pings every 10s, so 30s of silence means the
 				# connection is half-open and reconnect is the only way out.
 				if _last_activity.get(p, 0.0) > INACTIVITY_TIMEOUT:
-					push_warning("[MCP] Port %d silent for %.1fs — forcing reconnect" % [p, _last_activity[p]])
+					print_verbose("[MCP] Port %d silent for %.1fs — forcing reconnect" % [p, _last_activity[p]])
 					_stale_ports[p] = true
 					ws.close(4000, "Heartbeat timeout")
 					_connected[p] = false
@@ -186,7 +186,7 @@ func _process(delta: float) -> void:
 				if not _authed.get(p, true):
 					_auth_timers[p] = _auth_timers.get(p, 0.0) + delta
 					if _auth_timers[p] >= AUTH_TIMEOUT:
-						push_warning("[MCP] Port %d did not authenticate within %.0fs — closing" % [p, AUTH_TIMEOUT])
+						print_verbose("[MCP] Port %d did not authenticate within %.0fs — closing" % [p, AUTH_TIMEOUT])
 						ws.close(4001, "Authentication required")
 						_connected[p] = false
 						_peers[p] = null
@@ -340,7 +340,7 @@ func _dispatch_message(text: String, source_port: int) -> void:
 			_authed[source_port] = true
 			_send_response(source_port, id, {"authenticated": true}, null)
 		else:
-			push_warning("[MCP] Port %d presented a wrong token" % source_port)
+			print_verbose("[MCP] Port %d presented a wrong token" % source_port)
 			_send_response(source_port, id, null, {"code": -32001, "message": "Invalid token"})
 		return
 
