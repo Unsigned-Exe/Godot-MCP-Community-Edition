@@ -1,10 +1,10 @@
 > **Language:** [English](skills.md) | [日本語](skills.ja.md) | [Português (BR)](skills.pt-br.md) | [Español](skills.es.md) | Русский | [简体中文](skills.zh.md) | [हिन्दी](skills.hi.md)
 
-# Godot MCP Pro — Навыки для ИИ-ассистентов
+# Godot-MCP Community Edition — Навыки для ИИ-ассистентов
 
-> Скопируйте этот файл в `.claude/skills.md` в корне вашего проекта Godot, чтобы дать Claude Code полный контекст по эффективному использованию Godot MCP Pro.
+> Скопируйте этот файл в `.claude/skills.md` в корне вашего проекта Godot, чтобы дать Claude Code полный контекст по эффективному использованию Godot-MCP Community Edition.
 
-## Что такое Godot MCP Pro?
+## Что такое Godot-MCP Community Edition?
 
 Вам доступны 169 MCP-инструмента, которые напрямую подключаются к редактору Godot 4. Вы можете создавать сцены, писать скрипты, симулировать ввод игрока, инспектировать запущенные игры и многое другое — всё это без выхода пользователя из данного разговора. Все изменения проходят через систему UndoRedo Godot, поэтому пользователь всегда может нажать Ctrl+Z.
 

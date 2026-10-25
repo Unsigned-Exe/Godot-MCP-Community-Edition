@@ -1,4 +1,4 @@
-## Autoload injected by Godot MCP Pro plugin at runtime.
+## Autoload injected by Godot-MCP Community Edition plugin at runtime.
 ## Handles runtime game inspection: scene tree, node properties, frame capture, property monitoring.
 extends Node
 

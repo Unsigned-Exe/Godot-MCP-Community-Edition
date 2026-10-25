@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Asset Library packaging: isolate addon and documentation from release archives
+/** export-ignore
+/addons !export-ignore
+/addons/** !export-ignore
+/LICENSE !export-ignore
+/README.md !export-ignore

@@ -20,3 +20,6 @@ dist/
 *.pdb
 *.exe
 *.dll
+
+# Storefront copy & internal metadata
+ITCH_STOREFRONT.md

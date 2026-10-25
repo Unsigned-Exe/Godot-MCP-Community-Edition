@@ -1,10 +1,10 @@
 > **Language:** [English](skills.md) | [日本語](skills.ja.md) | [Português (BR)](skills.pt-br.md) | [Español](skills.es.md) | [Русский](skills.ru.md) | 简体中文 | [हिन्दी](skills.hi.md)
 
-# Godot MCP Pro — AI 助手技能指南
+# Godot-MCP Community Edition — AI 助手技能指南
 
-> 将此文件复制到 Godot 项目根目录的 `.claude/skills.md`，以便 Claude Code 获得如何高效使用 Godot MCP Pro 的完整上下文。
+> 将此文件复制到 Godot 项目根目录的 `.claude/skills.md`，以便 Claude Code 获得如何高效使用 Godot-MCP Community Edition 的完整上下文。
 
-## 什么是 Godot MCP Pro？
+## 什么是 Godot-MCP Community Edition？
 
 你可以使用 169 个 MCP 工具直接连接 Godot 4 编辑器。你可以创建场景、编写脚本、模拟玩家输入、检查运行中的游戏等等——所有操作都无需用户离开当前对话。每次更改都通过 Godot 的 UndoRedo 系统进行，因此用户随时可以 Ctrl+Z 撤销。
 

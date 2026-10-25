@@ -1,4 +1,4 @@
-## Autoload injected by Godot MCP Pro plugin at runtime.
+## Autoload injected by Godot-MCP Community Edition plugin at runtime.
 ## Monitors for screenshot requests from the editor and captures the game viewport.
 extends Node
 

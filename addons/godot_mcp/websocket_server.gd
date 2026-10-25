@@ -25,7 +25,8 @@ const HANDSHAKE_TIMEOUT := 10.0  # give up on a socket stuck CONNECTING/CLOSING
 ## shared machine and against cross-project mix-ups, NOT against a process
 ## running as you, which can read the token file just as a real server does.
 const TOKEN_PATH := "user://mcp_auth_token"
-const TOKEN_SETTING := "godot_mcp_pro/require_connection_token"
+const TOKEN_SETTING := "godot_mcp/require_connection_token"
+const LEGACY_TOKEN_SETTING := "godot_mcp_pro/require_connection_token"
 const AUTH_TIMEOUT := 5.0  # close a peer that has not authenticated in time
 
 # Per-port connection state
@@ -241,6 +242,8 @@ func _prepare_auth_token() -> String:
 	var required := false
 	if ProjectSettings.has_setting(TOKEN_SETTING):
 		required = bool(ProjectSettings.get_setting(TOKEN_SETTING))
+	elif ProjectSettings.has_setting(LEGACY_TOKEN_SETTING):
+		required = bool(ProjectSettings.get_setting(LEGACY_TOKEN_SETTING))
 	if OS.has_environment("GODOT_MCP_REQUIRE_TOKEN"):
 		var env := OS.get_environment("GODOT_MCP_REQUIRE_TOKEN").strip_edges().to_lower()
 		required = env != "" and env != "0" and env != "false"

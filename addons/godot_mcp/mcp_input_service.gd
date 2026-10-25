@@ -1,4 +1,4 @@
-## Autoload injected by Godot MCP Pro plugin at runtime.
+## Autoload injected by Godot-MCP Community Edition plugin at runtime.
 ## Monitors for input commands from the editor and dispatches them as Input events.
 extends Node
 

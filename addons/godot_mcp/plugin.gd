@@ -50,7 +50,7 @@ func _enter_tree() -> void:
 	var ver := "unknown"
 	if cfg.load("res://addons/godot_mcp/plugin.cfg") == OK:
 		ver = cfg.get_value("plugin", "version", "unknown")
-	print("[MCP] Godot MCP Pro v%s started (ports 6505-6514)" % ver)
+	print("[MCP] Godot-MCP Community Edition v%s started (ports 6505-6514)" % ver)
 
 
 func _exit_tree() -> void:
@@ -78,7 +78,7 @@ func _exit_tree() -> void:
 ## Project Settings. Defaults to false, so nothing changes unless a user turns
 ## it on — see SECURITY.md for what it does and does not protect against.
 func _register_project_settings() -> void:
-	const KEY := "godot_mcp_pro/require_connection_token"
+	const KEY := "godot_mcp/require_connection_token"
 	if not ProjectSettings.has_setting(KEY):
 		ProjectSettings.set_setting(KEY, false)
 	ProjectSettings.set_initial_value(KEY, false)
