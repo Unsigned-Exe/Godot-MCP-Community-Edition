@@ -61,7 +61,7 @@ if ([string]::IsNullOrWhiteSpace($TargetUser)) {
 }
 
 # 3. Verify archive exists
-$ZipPath = Join-Path $ScriptDir "dist\GodotMCP-v1.0.0-windows-64.zip"
+$ZipPath = Join-Path $ScriptDir "dist\GodotMCP-v1.0.1-windows-64.zip"
 if (-not (Test-Path $ZipPath)) {
     Write-Host "[ERROR] Distribution archive not found at: $ZipPath" -ForegroundColor Red
     Write-Host "Please build the project first."
@@ -69,9 +69,9 @@ if (-not (Test-Path $ZipPath)) {
 }
 
 $channel = "$TargetUser/${GameSlug}:windows-64"
-Write-Host "Pushing $ZipPath to $channel (version 1.0.0)..." -ForegroundColor Cyan
+Write-Host "Pushing $ZipPath to $channel (version 1.0.1)..." -ForegroundColor Cyan
 
-& "$ButlerExe" push "$ZipPath" "$channel" --userversion "1.0.0"
+& "$ButlerExe" push "$ZipPath" "$channel" --userversion "1.0.1"
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
