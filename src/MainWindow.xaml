@@ -518,6 +518,75 @@
                             </StackPanel>
                         </Border>
                     </Grid>
+
+                    <!-- Card 3: Hardware Tuning & Environment Options (Ollama, LM Studio & Godot) -->
+                    <Border Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <Expander IsExpanded="False" Background="Transparent" BorderThickness="0">
+                                <Expander.Header>
+                                    <Grid Width="700">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="⚙️ Hardware Tuning &amp; Environment Options" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ThemeForeground}" />
+                                            <TextBlock Text=" (Ollama, LM Studio &amp; Godot)" FontSize="12" Foreground="{DynamicResource ThemeSubText}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="4" Padding="6,2">
+                                            <TextBlock x:Name="txtEnvCountBadge" Text="0 Custom Variables" FontSize="10" Foreground="{DynamicResource ThemeAccent}" FontWeight="SemiBold" />
+                                        </Border>
+                                    </Grid>
+                                </Expander.Header>
+
+                                <StackPanel Margin="0,12,0,0">
+                                    <TextBlock Text="Configure custom timeouts and parameters passed to GodotMCP processes and injected into Claude, LM Studio, and Ollama client configs (mcp.json)." FontSize="11" Foreground="{DynamicResource ThemeSubText}" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+                                    <!-- Quick Presets Row -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="Quick Presets:" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <Button Content="+ Ollama Timeout (300s)" Click="OnAddPresetOllamaTimeout" Style="{StaticResource ChipButtonStyle}" Margin="0,0,6,0" />
+                                        <Button Content="+ LM Studio Timeout (300s)" Click="OnAddPresetLmStudioTimeout" Style="{StaticResource ChipButtonStyle}" Margin="0,0,6,0" />
+                                        <Button Content="+ AI Chat Timeout (300s)" Click="OnAddPresetChatTimeout" Style="{StaticResource ChipButtonStyle}" Margin="0,0,6,0" />
+                                    </StackPanel>
+
+                                    <!-- Key/Value Input Row -->
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="txtNewEnvKey" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" Margin="0,0,6,0" ToolTip="Variable Name (e.g. MCP_OLLAMA_TIMEOUT_SECONDS)" />
+                                        <TextBox x:Name="txtNewEnvValue" Grid.Column="1" Height="28" Padding="6,4" VerticalContentAlignment="Center" Background="{DynamicResource ThemeInputBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" FontSize="12" Margin="0,0,6,0" ToolTip="Variable Value (e.g. 300)" />
+                                        <Button Grid.Column="2" Content="➕ Add / Update" Click="OnAddCustomEnvVariable" Height="28" Padding="12,0" Background="{DynamicResource ThemeButtonBackground}" Foreground="{DynamicResource ThemeForeground}" BorderBrush="{DynamicResource ThemeBorderBrush}" />
+                                    </Grid>
+
+                                    <!-- Variables List -->
+                                    <Border Background="{DynamicResource ThemeInputBackground}" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" MaxHeight="160" Margin="0,0,0,10">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl x:Name="icEnvVariables">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="6,3">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="2*" />
+                                                                <ColumnDefinition Width="2*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding Key}" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource ThemeForeground}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                                                            <Button Grid.Column="2" Content="✖" Tag="{Binding Key}" Click="OnDeleteCustomEnvVariable" Width="22" Height="22" Background="Transparent" Foreground="#FF5F56" BorderThickness="0" Cursor="Hand" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Border>
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
 
@@ -847,8 +916,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="txtFooterLog" Text="Ready. Godot-MCP Community Edition running." FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="Unsigned Exe Studios © 2026 • MIT License" FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                <TextBlock x:Name="txtFooterLog" Text="Ready. Godot-MCP Community Edition v1.0.3 running." FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="v1.0.3 • Unsigned Exe Studios © 2026 • MIT License" FontSize="11" Foreground="{DynamicResource ThemeSubText}" VerticalAlignment="Center" />
             </Grid>
         </Border>
     </Grid>

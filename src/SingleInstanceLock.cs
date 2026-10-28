@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace MCP_Godot4
@@ -10,6 +11,11 @@ namespace MCP_Godot4
     /// </summary>
     public sealed class SingleInstanceLock : IDisposable
     {
+        [DllImport("user32.dll")]
+        private static extern bool AllowSetForegroundWindow(int dwProcessId);
+
+        private const int ASFW_ANY = -1;
+
         private Mutex? _mutex;
         private EventWaitHandle? _showEvent;
         private RegisteredWaitHandle? _waitHandleRegistration;
@@ -48,6 +54,7 @@ namespace MCP_Godot4
                 {
                     try
                     {
+                        AllowSetForegroundWindow(ASFW_ANY);
                         if (EventWaitHandle.TryOpenExisting(eventName, out var existingEvent))
                         {
                             existingEvent.Set();

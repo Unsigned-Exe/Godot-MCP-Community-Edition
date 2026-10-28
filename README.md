@@ -1,4 +1,4 @@
-﻿# Godot-MCP — Model Context Protocol Server & GUI Hub for Godot Engine 4.x
+# Godot-MCP — Model Context Protocol Server & GUI Hub for Godot Engine 4.x
 *(Community Edition — Free & Open Source under MIT)*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -44,7 +44,9 @@
   - 🔵 **Blue**: Waiting for Godot Editor to connect on port 6505.
   - 🟢 **Green**: Godot 4 Editor is connected live.
   - 🟡 **Amber**: AI model is actively executing a command inside Godot.
-- **1-Click AI Client Sync**: Automatically configures `claude_desktop_config.json`, LM Studio's `mcp.json`, and Ollama's `mcp.json`.
+- **1-Click AI Client Sync**: Automatically configures `claude_desktop_config.json`, LM Studio's `mcp.json`, and Ollama's `mcp.json` with automatic environment variable injection (`"env": { ... }`).
+- **Hardware Tuning & Custom Environment Options**: Fine-tune timeouts and parameters (`MCP_OLLAMA_TIMEOUT_SECONDS`, `MCP_LMSTUDIO_TIMEOUT_SECONDS`, `MCP_AI_CHAT_TIMEOUT_SECONDS`, `GODOT_PORT`) with Registry persistence and 1-click presets.
+- **Native Window Focus Handshake**: Single-instance mutex with Win32 `AllowSetForegroundWindow` permission handoff smoothly brings existing running Hub instances to the front.
 - **Live Godot 4 Integration**: Live scene tree inspector, real-time node addition/deletion, property updates, viewport screenshot capture, and GDScript execution.
 - **Pro Suite Showcase**: Discover the broader [MCP Suite Pro](https://unsignedexe.com) ecosystem (Blender, Aseprite, Krita, Audacity, FMOD, Wwise, Spine, DaVinci Resolve) directly from the lower deck.
 

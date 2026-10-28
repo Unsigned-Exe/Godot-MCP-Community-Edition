@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Godot-MCP — Official Manual &amp; Reference (Community Edition)</title>
+    <title>Godot-MCP — Official Manual &amp; Reference (Community Edition v1.0.3)</title>
     <style>
         :root {
             --bg-page: #f8f9fa;
@@ -93,14 +93,14 @@
     </style>
 </head>
 <body>
-<p>﻿# Godot-MCP — Model Context Protocol Server &amp; GUI Hub for Godot Engine 4.x
-<em>(Community Edition — Free &amp; Open Source under MIT)</em></p>
+<h1 id="godot-mcp-model-context-protocol-server-gui-hub-for-godot-engine-4x">Godot-MCP — Model Context Protocol Server &amp; GUI Hub for Godot Engine 4.x</h1>
+<p><em>(Community Edition — Free &amp; Open Source under MIT)</em></p>
 <p><a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
 <a href="https://godotengine.org"><img alt="Godot 4.x" src="https://img.shields.io/badge/Godot-4.x-478cbf?logo=godotengine&amp;logoColor=white" /></a>
 <a href="https://dotnet.microsoft.com"><img alt=".NET 8" src="https://img.shields.io/badge/.NET-8.0-512bd4?logo=dotnet&amp;logoColor=white" /></a>
 <a href="https://unsignedexe.com"><img alt="Studio: Unsigned Exe" src="https://img.shields.io/badge/Studio-Unsigned%20Exe-00f0ff" /></a></p>
 <p><strong>Godot-MCP (Community Edition)</strong> is an open-source, portable desktop GUI hub and <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> server that connects local and cloud AI assistants (<strong>Claude Desktop / Code</strong>, <strong>LM Studio</strong>, <strong>Ollama</strong>, <strong>Cursor</strong>, <strong>Antigravity</strong>) directly into the active <strong>Godot Engine 4.x Editor</strong>.</p>
-<pre class="codehilite"><code>   ┌─────────────────────────────────────────────────────────┐
+<pre><code>   ┌─────────────────────────────────────────────────────────┐
    │ AI Coding Assistant (Claude, LM Studio, Ollama, etc.)    │
    └──────────────────────────┬──────────────────────────────┘
                               │ Standard MCP (stdio JSON-RPC 2.0)
@@ -118,7 +118,6 @@
    │               addons/godot_mcp plugin                   │
    └─────────────────────────────────────────────────────────┘
 </code></pre>
-
 <hr />
 <h2 id="highlights">Highlights</h2>
 <ul>
@@ -134,16 +133,18 @@
 <li>🔵 <strong>Blue</strong>: Waiting for Godot Editor to connect on port 6505.</li>
 <li>🟢 <strong>Green</strong>: Godot 4 Editor is connected live.</li>
 <li>🟡 <strong>Amber</strong>: AI model is actively executing a command inside Godot.</li>
-<li><strong>1-Click AI Client Sync</strong>: Automatically configures <code>claude_desktop_config.json</code>, LM Studio's <code>mcp.json</code>, and Ollama's <code>mcp.json</code>.</li>
+<li><strong>1-Click AI Client Sync</strong>: Automatically configures <code>claude_desktop_config.json</code>, LM Studio's <code>mcp.json</code>, and Ollama's <code>mcp.json</code> with automatic environment variable injection (<code>"env": { ... }</code>).</li>
+<li><strong>Hardware Tuning &amp; Custom Environment Options</strong>: Fine-tune timeouts and parameters (<code>MCP_OLLAMA_TIMEOUT_SECONDS</code>, <code>MCP_LMSTUDIO_TIMEOUT_SECONDS</code>, <code>MCP_AI_CHAT_TIMEOUT_SECONDS</code>, <code>GODOT_PORT</code>) with Registry persistence and 1-click presets.</li>
+<li><strong>Native Window Focus Handshake</strong>: Single-instance mutex with Win32 <code>AllowSetForegroundWindow</code> permission handoff smoothly brings existing running Hub instances to the front.</li>
 <li><strong>Live Godot 4 Integration</strong>: Live scene tree inspector, real-time node addition/deletion, property updates, viewport screenshot capture, and GDScript execution.</li>
 <li><strong>Pro Suite Showcase</strong>: Discover the broader <a href="https://unsignedexe.com">MCP Suite Pro</a> ecosystem (Blender, Aseprite, Krita, Audacity, FMOD, Wwise, Spine, DaVinci Resolve) directly from the lower deck.</li>
 </ul>
 <hr />
 <h2 id="quickstart">Quickstart</h2>
-<h3 id="option-1-use-the-pre-compiled-binary">Option 1: Download from itch.io (Pre-Compiled Binary)</h3>
+<h3 id="option-1-download-from-itchio-pre-compiled-binary">Option 1: Download from itch.io (Pre-Compiled Binary)</h3>
 <p>Download the standalone <code>GodotMCP.exe</code> binary from <strong>itch.io</strong>. No .NET runtime installation is required—it is 100% self-contained.</p>
 <h3 id="option-2-build-from-source">Option 2: Build from Source</h3>
-<pre class="codehilite"><code class="language-bash">git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git
+<pre><code class="language-bash">git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git
 cd Godot-MCP-Community-Edition/src
 dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o ../dist
 </code></pre>
@@ -151,18 +152,15 @@ dotnet publish GodotMCP.csproj -c Release -r win-x64 --self-contained -p:Publish
 <p>This repository includes a pre-configured solution file (<code>GodotMCP.sln</code>) for opening and compiling the project directly inside Visual Studio 2022 or 2026:</p>
 <ol>
 <li><strong>Clone the Repository</strong>:
-<pre class="codehilite"><code class="language-bash">git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git
-</code></pre></li>
+   <code>bash
+   git clone https://github.com/Unsigned-Exe/Godot-MCP-Community-Edition.git</code></li>
 <li><strong>Open the Solution</strong>:
-Double-click <code>GodotMCP.sln</code> to open it in Visual Studio (requires the <strong>.NET Desktop Development</strong> workload).</li>
-<li><strong>Build the Solution</strong>:
-<ul>
+   Double-click <code>GodotMCP.sln</code> to open it in Visual Studio (requires the <strong>.NET Desktop Development</strong> workload).</li>
+<li><strong>Build the Solution</strong>:</li>
 <li>Set configuration to <strong>Release</strong> and platform to <strong>Any CPU</strong> or <strong>x64</strong>.</li>
 <li>Press <code>Ctrl+Shift+B</code> (or select <strong>Build -&gt; Build Solution</strong>).</li>
 <li>The compiled binary will be placed at <code>dist/GodotMCP.exe</code> (or <code>src/bin/Release/net8.0-windows/GodotMCP.exe</code>).</li>
-</ul></li>
 </ol>
-
 <hr />
 <h2 id="usage">Usage</h2>
 <h3 id="1-launch-the-desktop-hub">1. Launch the Desktop Hub</h3>
@@ -196,7 +194,7 @@ Double-click <code>GodotMCP.sln</code> to open it in Visual Studio (requires the
 <li>Click <strong>Submit for Review</strong>. Once approved by Godot moderators, any developer can install your addon directly from inside the Godot Editor.</li>
 </ol>
 <h3 id="3-command-line-options">3. Command-Line Options</h3>
-<pre class="codehilite"><code class="language-bash">GodotMCP.exe [options]
+<pre><code class="language-bash">GodotMCP.exe [options]
 
 OPTIONS:
   -h, --help                 Display help information.
@@ -206,12 +204,11 @@ OPTIONS:
   --tray                     Start minimized to the Windows system tray.
   --install-addon &lt;path&gt;     Installs the godot_mcp plugin into a target project.
 </code></pre>
-
 <hr />
 <h2 id="manual-ai-client-configuration">Manual AI Client Configuration</h2>
 <p>If you prefer manual configuration, add this block to your client:</p>
 <h4 id="claude-desktop-appdataclaudeclaude_desktop_configjson">Claude Desktop (<code>%APPDATA%\Claude\claude_desktop_config.json</code>)</h4>
-<pre class="codehilite"><code class="language-json">{
+<pre><code class="language-json">{
   &quot;mcpServers&quot;: {
     &quot;godot-4-7&quot;: {
       &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
@@ -220,9 +217,8 @@ OPTIONS:
   }
 }
 </code></pre>
-
 <h4 id="lm-studio-userprofilecachelm-studiomcpjson">LM Studio (<code>%USERPROFILE%\.cache\lm-studio\mcp.json</code>)</h4>
-<pre class="codehilite"><code class="language-json">{
+<pre><code class="language-json">{
   &quot;mcpServers&quot;: {
     &quot;godot-4-7&quot;: {
       &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
@@ -231,9 +227,8 @@ OPTIONS:
   }
 }
 </code></pre>
-
 <h4 id="ollama-userprofileollamamcpjson">Ollama (<code>%USERPROFILE%\.ollama\mcp.json</code>)</h4>
-<pre class="codehilite"><code class="language-json">{
+<pre><code class="language-json">{
   &quot;mcpServers&quot;: {
     &quot;godot-4-7&quot;: {
       &quot;command&quot;: &quot;C:\\path\\to\\GodotMCP.exe&quot;,
@@ -242,7 +237,6 @@ OPTIONS:
   }
 }
 </code></pre>
-
 <hr />
 <h2 id="tool-reference-25-tools">Tool Reference (25 Tools)</h2>
 <table>

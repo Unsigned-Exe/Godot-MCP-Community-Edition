@@ -51,6 +51,15 @@ namespace MCP_Godot4
             }
             return TimeSpan.FromMinutes(5); // Default to 300s (5 minutes) for local models
         }
+
+        public static void SetTimeout(TimeSpan timeout)
+        {
+            try
+            {
+                Http.Timeout = timeout;
+            }
+            catch { }
+        }
         private readonly GodotMcpBridge _mcpBridge;
         private readonly List<object> _rawTools;
 

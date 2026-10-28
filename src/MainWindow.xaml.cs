@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
@@ -47,6 +48,7 @@ namespace MCP_Godot4
         private CancellationTokenSource? _chatCts;
         private bool _isInitializing = true;
         private bool _isChatBusy = false;
+        private readonly ObservableCollection<KeyValuePair<string, string>> _envVariables = new();
 
         public MainWindow(GodotBridge bridge)
         {
@@ -270,6 +272,11 @@ namespace MCP_Godot4
             chkOllama.IsChecked = ClientConfigSync.IsClientInstalled(ClientConfigSync.ClientOllama);
 
             txtPort.Text = _bridge.BoundPort.ToString();
+
+            // 4. Load configured environment variables
+            icEnvVariables.ItemsSource = _envVariables;
+            LoadConfiguredEnvironment();
+
             UpdateConnectionBadge();
         }
 
@@ -997,26 +1004,145 @@ namespace MCP_Godot4
             }
         }
 
+        #region Hardware Tuning & Environment Options
+
+        private void LoadConfiguredEnvironment()
+        {
+            _envVariables.Clear();
+            var dict = ClientConfigSync.GetConfiguredEnvironment();
+            foreach (var kvp in dict)
+            {
+                _envVariables.Add(kvp);
+                try { Environment.SetEnvironmentVariable(kvp.Key, kvp.Value); } catch { }
+            }
+            UpdateEnvBadge();
+            ApplyTimeoutsFromEnv(dict);
+        }
+
+        private void UpdateEnvBadge()
+        {
+            txtEnvCountBadge.Text = $"{_envVariables.Count} Custom Variable{(_envVariables.Count == 1 ? "" : "s")}";
+        }
+
+        private void SaveAndApplyEnvVariables()
+        {
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in _envVariables)
+            {
+                dict[kvp.Key] = kvp.Value;
+                try { Environment.SetEnvironmentVariable(kvp.Key, kvp.Value); } catch { }
+            }
+            ClientConfigSync.SaveConfiguredEnvironment(dict);
+            UpdateEnvBadge();
+            ApplyTimeoutsFromEnv(dict);
+        }
+
+        private void ApplyTimeoutsFromEnv(Dictionary<string, string> dict)
+        {
+            string? timeoutSec = null;
+            if (dict.TryGetValue("MCP_AI_CHAT_TIMEOUT_SECONDS", out var s1)) timeoutSec = s1;
+            else if (dict.TryGetValue("MCP_OLLAMA_TIMEOUT_SECONDS", out var s2)) timeoutSec = s2;
+            else if (dict.TryGetValue("MCP_LMSTUDIO_TIMEOUT_SECONDS", out var s3)) timeoutSec = s3;
+
+            if (int.TryParse(timeoutSec, out var sec) && sec > 0)
+            {
+                LocalAiChatService.SetTimeout(TimeSpan.FromSeconds(sec));
+            }
+        }
+
+        private void OnAddPresetOllamaTimeout(object sender, RoutedEventArgs e)
+        {
+            AddOrUpdateEnvVariable("MCP_OLLAMA_TIMEOUT_SECONDS", "300");
+        }
+
+        private void OnAddPresetLmStudioTimeout(object sender, RoutedEventArgs e)
+        {
+            AddOrUpdateEnvVariable("MCP_LMSTUDIO_TIMEOUT_SECONDS", "300");
+        }
+
+        private void OnAddPresetChatTimeout(object sender, RoutedEventArgs e)
+        {
+            AddOrUpdateEnvVariable("MCP_AI_CHAT_TIMEOUT_SECONDS", "300");
+        }
+
+        private void OnAddCustomEnvVariable(object sender, RoutedEventArgs e)
+        {
+            string key = txtNewEnvKey.Text.Trim();
+            string val = txtNewEnvValue.Text.Trim();
+            if (string.IsNullOrWhiteSpace(key)) return;
+
+            AddOrUpdateEnvVariable(key, val);
+            txtNewEnvKey.Clear();
+            txtNewEnvValue.Clear();
+        }
+
+        private void AddOrUpdateEnvVariable(string key, string value)
+        {
+            for (int i = 0; i < _envVariables.Count; i++)
+            {
+                if (string.Equals(_envVariables[i].Key, key, StringComparison.OrdinalIgnoreCase))
+                {
+                    _envVariables[i] = new KeyValuePair<string, string>(key, value);
+                    SaveAndApplyEnvVariables();
+                    txtFooterLog.Text = $"Updated environment variable: {key} = {value}";
+                    return;
+                }
+            }
+            _envVariables.Add(new KeyValuePair<string, string>(key, value));
+            SaveAndApplyEnvVariables();
+            txtFooterLog.Text = $"Added environment variable: {key} = {value}";
+        }
+
+        private void OnDeleteCustomEnvVariable(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string key)
+            {
+                for (int i = 0; i < _envVariables.Count; i++)
+                {
+                    if (string.Equals(_envVariables[i].Key, key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _envVariables.RemoveAt(i);
+                        try { Environment.SetEnvironmentVariable(key, null); } catch { }
+                        SaveAndApplyEnvVariables();
+                        txtFooterLog.Text = $"Removed environment variable: {key}";
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         private void OnSyncAssistants(object sender, RoutedEventArgs e)
         {
             string currentExe = Environment.ProcessPath ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GodotMCP.exe");
             var synced = new List<string>();
 
+            var envDict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in _envVariables)
+            {
+                envDict[kvp.Key] = kvp.Value;
+            }
+            if (!string.IsNullOrWhiteSpace(txtPort.Text) && !envDict.ContainsKey("GODOT_PORT"))
+            {
+                envDict["GODOT_PORT"] = txtPort.Text.Trim();
+            }
+
             if (chkClaude.IsChecked == true)
             {
-                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientClaude, currentExe))
+                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientClaude, currentExe, envDict))
                     synced.Add("Claude Desktop");
             }
 
             if (chkLmStudio.IsChecked == true)
             {
-                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientLmStudio, currentExe))
+                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientLmStudio, currentExe, envDict))
                     synced.Add("LM Studio");
             }
 
             if (chkOllama.IsChecked == true)
             {
-                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientOllama, currentExe))
+                if (ClientConfigSync.RegisterGodotServer(ClientConfigSync.ClientOllama, currentExe, envDict))
                     synced.Add("Ollama");
             }
 
@@ -1085,15 +1211,17 @@ namespace MCP_Godot4
                     WindowState = WindowState.Normal;
                 }
 
-                Activate();
-                Focus();
-
                 var helper = new System.Windows.Interop.WindowInteropHelper(this);
                 if (helper.Handle != IntPtr.Zero)
                 {
                     ShowWindow(helper.Handle, SW_RESTORE);
                     SetForegroundWindow(helper.Handle);
                 }
+
+                this.Topmost = true;
+                this.Topmost = false;
+                this.Activate();
+                this.Focus();
             });
         }
 

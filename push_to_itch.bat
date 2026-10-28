@@ -44,7 +44,7 @@ if "%TARGET_USER%"=="" (
     exit /b 1
 )
 
-set ZIP_PATH=dist\GodotMCP-v1.0.1-windows-64.zip
+set ZIP_PATH=dist\GodotMCP-v1.0.3-windows-64.zip
 if not exist "%ZIP_PATH%" (
     echo [ERROR] %ZIP_PATH% not found. Run a build first!
     pause
@@ -52,8 +52,8 @@ if not exist "%ZIP_PATH%" (
 )
 
 echo.
-echo Pushing %ZIP_PATH% to %TARGET_USER%/godot-mcp-community-edition:windows-64 ...
-"!BUTLER_EXE!" push "%ZIP_PATH%" %TARGET_USER%/godot-mcp-community-edition:windows-64 --userversion 1.0.1
+echo Pushing %ZIP_PATH% to %TARGET_USER%/godot-mcp:windows-64 ...
+"!BUTLER_EXE!" push "%ZIP_PATH%" %TARGET_USER%/godot-mcp:windows-64 --userversion 1.0.3
 
 if %ERRORLEVEL% equ 0 (
     echo.

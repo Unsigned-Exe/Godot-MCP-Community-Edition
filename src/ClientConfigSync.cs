@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.Win32;
 
 namespace MCP_Godot4
 {
@@ -79,7 +80,78 @@ namespace MCP_Godot4
             }
         }
 
-        public static bool RegisterGodotServer(string client, string? customExePath = null)
+        public static Dictionary<string, string> GetConfiguredEnvironment()
+        {
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                using var key = Registry.CurrentUser.OpenSubKey(@"Software\GodotMCP\Env", false);
+                if (key != null)
+                {
+                    foreach (var valName in key.GetValueNames())
+                    {
+                        var val = key.GetValue(valName)?.ToString();
+                        if (val != null)
+                        {
+                            dict[valName] = val;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            // If empty, also check MCP-Suite registry if available
+            if (dict.Count == 0)
+            {
+                try
+                {
+                    using var suiteKey = Registry.CurrentUser.OpenSubKey(@"Software\MCP-Suite\Servers\godot-4-7\Env", false);
+                    if (suiteKey != null)
+                    {
+                        foreach (var valName in suiteKey.GetValueNames())
+                        {
+                            var val = suiteKey.GetValue(valName)?.ToString();
+                            if (val != null)
+                            {
+                                dict[valName] = val;
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return dict;
+        }
+
+        public static void SaveConfiguredEnvironment(IReadOnlyDictionary<string, string> env)
+        {
+            try
+            {
+                using var key = Registry.CurrentUser.CreateSubKey(@"Software\GodotMCP\Env", true);
+                if (key != null)
+                {
+                    foreach (var name in key.GetValueNames())
+                    {
+                        if (!env.ContainsKey(name))
+                        {
+                            key.DeleteValue(name, false);
+                        }
+                    }
+
+                    foreach (var kvp in env)
+                    {
+                        if (!string.IsNullOrWhiteSpace(kvp.Key))
+                        {
+                            key.SetValue(kvp.Key, kvp.Value ?? "");
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public static bool RegisterGodotServer(string client, string? customExePath = null, IReadOnlyDictionary<string, string>? envVars = null)
         {
             try
             {
@@ -117,6 +189,24 @@ namespace MCP_Godot4
                     ["command"] = exePath,
                     ["args"] = new JsonArray { "--server" }
                 };
+
+                // Inject environment variables if specified or configured
+                var effectiveEnv = envVars ?? GetConfiguredEnvironment();
+                if (effectiveEnv != null && effectiveEnv.Count > 0)
+                {
+                    var envObj = new JsonObject();
+                    foreach (var (k, v) in effectiveEnv)
+                    {
+                        if (!string.IsNullOrWhiteSpace(k))
+                        {
+                            envObj[k.Trim()] = v ?? "";
+                        }
+                    }
+                    if (envObj.Count > 0)
+                    {
+                        godotEntry["env"] = envObj;
+                    }
+                }
 
                 mcpServers["godot-4-7"] = godotEntry;
 
