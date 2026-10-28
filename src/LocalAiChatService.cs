@@ -38,7 +38,19 @@ namespace MCP_Godot4
 
     public class LocalAiChatService
     {
-        private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(120) };
+        private static readonly HttpClient Http = new() { Timeout = ResolveChatHttpTimeout() };
+
+        private static TimeSpan ResolveChatHttpTimeout()
+        {
+            var envStr = Environment.GetEnvironmentVariable("MCP_AI_CHAT_TIMEOUT_SECONDS")
+                      ?? Environment.GetEnvironmentVariable("MCP_OLLAMA_TIMEOUT_SECONDS")
+                      ?? Environment.GetEnvironmentVariable("MCP_LMSTUDIO_TIMEOUT_SECONDS");
+            if (int.TryParse(envStr, out var sec) && sec > 0)
+            {
+                return TimeSpan.FromSeconds(sec);
+            }
+            return TimeSpan.FromMinutes(5); // Default to 300s (5 minutes) for local models
+        }
         private readonly GodotMcpBridge _mcpBridge;
         private readonly List<object> _rawTools;
 
