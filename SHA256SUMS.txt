@@ -1,6 +1,7 @@
-# Godot-MCP Community Edition v1.0.1 — Official SHA-256 Checksums
-# Generated: 2026-10-25 10:39:55 UTC
+# Godot-MCP Community Edition v1.0.3 — Official SHA-256 Checksums
+# Generated: 2026-10-28 23:37:52 UTC
 
-b9f9dc0b563e82fd028312a3c5047d9d7d401a85c515ba6b7ed658befbcea7cb  GodotMCP.exe
-615466d76a602f84f26f24f02ce0182ba733917cd59f99cbe29c4d84e43fc91d  GodotMCP-v1.0.1-windows-64.zip
-b7e9aae595a3807e76a8f00a17377967d692ac938705418b405fb62db055e176  godot_mcp_assetlib.zip
+c409c2b7e8d152dcff12065baae762de8e69f93c60eb42813b04aaa4ebdf2f6f  GodotMCP.exe
+ceedba8888cf5beb514714bdcf3c014ed40d98e77a2a41ef00e4c476698dfe96  GodotMCP-v1.0.3-windows-64.zip
+8a9c8ef50543a77d2728852bbadf5057d55d426ca9cd20f8513639ccc7065496  godot_mcp_assetlib.zip
+721e6eb39c1238fe4763517fed01ca1445a4ca9731610dc32f4c688d7e4e2250  Godot_MCP_Manual.pdf
